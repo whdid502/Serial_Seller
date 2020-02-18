@@ -9,9 +9,10 @@ games = soup.select('ul#search-result-items > li > div:nth-child(1)')
 
 for game in games:
     game_link = 'https://store.ubi.com' + game.select_one('a.thumb-link')['href']
-    game_img = game.select_one('div.product-image card-image-wrapper > img.product-image primary-image lazy card-image swapped loaded')['src']
-    # game_title = game.select_one('div.product-tile card full-tile-link full-width > div.card-details-wrapper > div.card-details > div.card-title > h2').text
-    # game_original_pirce = game.select_one('div.product-tile card full-tile-link full-width > div.card-details-wrapper > div.card-details > div.card-info > div.card-price > div.product-price price deal discount-shown > span.price-standard > span').text
-    # game_discount_rate = game.select_one('div.product-tile card full-tile-link full-width > div.card-details-wrapper > div.card-details > div.card-additional-details card-labels-wrapper show-timer-oncard > div.discount_timer_section deal > div.product-price price deal discount-shown > div.deal-percentage card-label card-deal').text
-    # game_discount_price = game.select_one('div.product-tile card full-tile-link full-width > div.card-details-wrapper > div.card-details > div.card-info > div.card-price > div.product-price price deal discount-shown > span.price-sales standard-price').text
-    print(game_img)
+    game_img = game.select_one('div.product-image > img')['data-desktop-src']
+    game_title = game.select_one('div.card-details-wrapper > div.card-details > div.card-title > h2').get_text(" ", strip=True)
+    game_subtitle = game.select_one('div.card-details-wrapper > div.card-details > div.card-subtitle > h3').text
+    game_original_price = game.select_one('div.card-details-wrapper > div.card-details > div.card-info > div.card-price > div.product-price > span.price-standard > span').get_text(" ", strip=True)
+    game_discount_rate = game.select_one('div.card-details-wrapper > div.card-details > div.card-additional-details > div.discount_timer_section > div.product-price > div').get_text(" ", strip=True)
+    game_discount_price = game.select_one('div.card-details-wrapper > div.card-details > div.card-info > div.card-price > div.product-price > span.price-sales').text
+    print(game_title, game_discount_price)
