@@ -115,5 +115,14 @@ def epic_sale():
                 db.info.remove(a['title'])
         return jsonify({'result': 'success'})
 
+@app.route('/humblebundle_info', methods=['GET'])
+def get_humblebundle_sale():
+  client = MongoClient('localhost', 27017)
+  db = client.dbgamesalesinfo
+  output = []
+  for s in db.sale.find():
+    output.append({'epic_link' : s['epic_link'], 'epic_img': s['epic_img'], 'epic_title' : s['epic_title'], 'epic_original_price' : s['epic_original_price'], 'epic_discount_rate' : s['epic_discount_rate'] , 'epic_discount_price' : s['epic_discount_price']})
+  return jsonify({'result' : output})
+
 if __name__ == '__main__':
    app.run('0.0.0.0',port=5000,debug=True)

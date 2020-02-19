@@ -24,4 +24,4 @@ for game in games:
     combined_price = game.select_one('div.responsive_search_name_combined > div.col.search_price_discount_combined.responsive_secondrow > div.col.search_price.discounted.responsive_secondrow')
     unwanted_price = combined_price.find('span')
     unwanted_price.extract()
-    print(game_title)
+    print(game_title, combined_price)

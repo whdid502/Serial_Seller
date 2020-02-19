@@ -15,4 +15,4 @@ for game in games:
     game_original_price = game.select_one('div.card-details-wrapper > div.card-details > div.card-info > div.card-price > div.product-price > span.price-standard > span').get_text(" ", strip=True)
     game_discount_rate = game.select_one('div.card-details-wrapper > div.card-details > div.card-additional-details > div.discount_timer_section > div.product-price > div').get_text(" ", strip=True)
     game_discount_price = game.select_one('div.card-details-wrapper > div.card-details > div.card-info > div.card-price > div.product-price > span.price-sales').text
-    print(game_title, game_discount_price)
+    print(game_title, game_subtitle, game_discount_price)

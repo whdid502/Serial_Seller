@@ -14,4 +14,4 @@ for game in games:
     game_original_price = game.select_one('div > div > div.OfferCard-meta_34c2e3a1 > div > div > s').text
     game_discount_rate = game.select_one('div > div > div.OfferCard-meta_34c2e3a1 > div > span.PurchaseTag-tag_9dafbeea').text
     game_discount_price = game.select_one('div > div > div.OfferCard-meta_34c2e3a1 > div > div > span').text
-    print(game_discount_price)
+    print(game_title, game_discount_price)
