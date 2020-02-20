@@ -17,11 +17,9 @@ games = soup.select('div#search_resultsRows > a')
 # print(games)
 for game in games:
     game_link = game['href']
-    game_img = game.select_one('div.search_capsule > img').get('src')
-    game_title = game.select_one('div.responsive_search_name_combined >  div.col.search_name.ellipsis > span').text
-    game_original_pirce = game.select_one('div.responsive_search_name_combined > div.col.search_price_discount_combined.responsive_secondrow > div.col.search_price.discounted.responsive_secondrow > span > strike').text
-    game_discount_rate = game.select_one('div.responsive_search_name_combined > div.col.search_price_discount_combined.responsive_secondrow > div.col.search_discount.responsive_secondrow > span').text
-    combined_price = game.select_one('div.responsive_search_name_combined > div.col.search_price_discount_combined.responsive_secondrow > div.col.search_price.discounted.responsive_secondrow')
-    unwanted_price = combined_price.find('span')
-    unwanted_price.extract()
-    print(game_title, combined_price)
+    game_img = game.select_one('div > img').get('src')
+    game_title = game.select_one('div > div > span.title').text
+    game_original_price = game.select_one('div > div > div > span > strike').text.replace('₩','',1)
+    game_discount_rate = game.select_one('div > div > div > span').text.translate({ ord('-'): '', ord('%'): ''})
+    game_discount_price = game.select_one('div > div > div.search_price > span').text.replace('₩','',1)
+    print(game_discount_price)
