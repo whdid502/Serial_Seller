@@ -1,7 +1,7 @@
-def get_rate(a, b):
-    c = -(100 - (int(b) / int(a) * 100))
-    return c
+def get_rate():
+    discount_rate = 100 - (float(game_discount_price) / game_original_price * 100)
+    return float(discount_rate)
 
-get_rate(29000, 18000)
+
 
 #a는 원가 b는 할인가

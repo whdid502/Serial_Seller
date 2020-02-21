@@ -14,16 +14,20 @@ for game in games:
     game_link = 'https://directg.net/game' + game.select_one('div > a')['href'].replace('.','',1)
     game_img = game.select_one('div > a > img')['src']
     game_title = game.select_one('div.vm-product-descr-container-1 > a')['title']
-    game_original_price = game.select_one('div.vm3pr-2 > div > div > span.PricebasePrice').text.replace('\\','')
+    game_original_price = game.select_one('div.vm3pr-2 > div > div > span.PricebasePrice').text.translate({ ord('\\'): '', ord(','): ''}).strip()
     if game.select_one('div.vm3pr-0 > div > div.addtocart-bar > div > div') != None:
-        game_discount_rate = game.select_one('div.vm3pr-0 > div > div.addtocart-bar > div > div > span').text.replace('%','')
-        game_discount_price = game.select_one('div.vm3pr-2 > div > div.PricesalesPrice > span.PricesalesPrice').get_text(" ", strip=True).replace('\\','')
+        game_discount_rate = game.select_one('div.vm3pr-0 > div > div.addtocart-bar > div > div > span').text.replace('%','').strip()
+        game_discount_price = game.select_one('div.vm3pr-2 > div > div.PricesalesPrice > span.PricesalesPrice').text.replace('\\','').replace(',','').strip()
     else:
         game_discount_rate = 0
-        game_discount_price = 0
+        game_discount_price = game_original_price
+    print(game_title, game_original_price, game_discount_rate, game_discount_price)
+    # game_original_price = float(game_original_price.replace(',',''))translate({ ord('₩'): '', ord(','): ''})
+    # game_discount_price = float(game_discount_price)
 
-    def get_rate(a, b):
-        c = -(100 - (b / a * 100))
-        return c
-    get_rate(game_original_price, game_discount_price)
+    # def get_rate():
+    #     discount_rate = 100 - (float(game_discount_price) / float(game_original_price) * 100)
+    #     return float(discount_rate)
+    # print(game_discount_rate, get_rate())
+# get_rate(game_original_price, game_discount_price)
 # print(game_original_price, game_discount_price, game_discount_rate)

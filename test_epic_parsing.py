@@ -11,7 +11,16 @@ for game in games:
     game_link = 'https://www.epicgames.com' + game['href']
     game_img = game.select_one('div > div > div > div > div.Picture-picture_6dd45462 > img')['data-image']
     game_title = game.select_one('div > div > div.OfferCard-meta_34c2e3a1 > span.OfferTitleInfo-title_abc02a91').text
-    game_original_price = game.select_one('div > div > div.OfferCard-meta_34c2e3a1 > div > div > s').text.replace('₩','',1)
+    game_original_price = game.select_one('div > div > div.OfferCard-meta_34c2e3a1 > div > div > s').text.translate({ ord('₩'): '', ord(','): ''}).strip()
     game_discount_rate = game.select_one('div > div > div.OfferCard-meta_34c2e3a1 > div > span.PurchaseTag-tag_9dafbeea').text.translate({ ord('-'): '', ord('%'): ''})
-    game_discount_price = game.select_one('div > div > div.OfferCard-meta_34c2e3a1 > div > div > span').text.replace('₩','',1)
-    print(game_title, game_original_price, game_discount_price, game_discount_rate)
+    game_discount_price = game.select_one('div > div > div.OfferCard-meta_34c2e3a1 > div > div > span').text.translate({ ord('₩'): '', ord(','): ''}).strip()
+    print(game_title, game_original_price, game_discount_rate, game_discount_price)
+
+    # print(game_original_price)
+    # game_original_price = game_original_price.replace(',','')
+    # game_discount_price = game_discount_price.replace(',','')
+    # print(game_original_price, game_discount_price)
+    # def get_rate():
+    #     discount_rate = 100 - (float(game_discount_price) / float(game_original_price) * 100)
+    #     return float(discount_rate)
+    # print(game_discount_rate, get_rate())

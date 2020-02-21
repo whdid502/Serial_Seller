@@ -21,4 +21,11 @@ for game in games:
     game_original_price = game['price']['baseAmount']
     game_discount_rate = game['price']['discountPercentage']
     game_discount_price = game['price']['amount']
+
     print(game_title, game_original_price, game_discount_rate, game_discount_price)
+
+    # def get_rate():
+    #     discount_rate = 100 - (float(game_discount_price) / float(game_original_price) * 100)
+    #     return float(discount_rate)
+    # print(game_discount_rate, get_rate())
+

@@ -19,9 +19,13 @@ def steam_sale():
         game_link = game['href']
         game_img = game.select_one('div > img').get('src')
         game_title = game.select_one('div > div > span.title').text
-        game_original_price = game.select_one('div > div > div > span > strike').text.replace('₩', '', 1)
+        game_original_price = game.select_one('div > div > div > span > strike').text.replace('₩', '',1).strip().replace(',','')
         game_discount_rate = game.select_one('div > div > div > span').text.translate({ord('-'): '', ord('%'): ''})
-        game_discount_price = game.select_one('div > div > div.search_price > span').text.replace('₩', '', 1)
+        combined_div = game.select_one('div > div > div.search_price')
+        unwanted_div = game.select_one('div > div > div.search_price > span')
+        for div in unwanted_div:
+            div.extract()
+        game_discount_price = combined_div.text.replace('₩', '', 1).strip().replace(',', '')
         client = MongoClient('localhost', 27017)
         db = client.dbgamesalesinfo
         db.info.update({'title': game_title}, {'platform': 'steam', 'link': game_link, 'img': game_img, 'title': game_title, 'original_price': game_original_price, 'discount_rate': game_discount_rate, 'discount_price': game_discount_price}, upsert=True)
@@ -40,15 +44,15 @@ def uplay_sale():
     for game in games:
         game_link = 'https://store.ubi.com' + game.select_one('a.thumb-link')['href']
         game_img = game.select_one('div.product-image > img')['data-desktop-src']
-        game_title = game.select_one('div > div > div > h2.prod-title').get_text(" ", strip=True) + ' ' + game.select_one('div > div > div > h3').text
+        game_title = game.select_one('div > div > div > h2.prod-title').get_text(" ",strip=True) + ' ' + game.select_one('div > div > div > h3').text
         if game.select_one('div > div > div > div > div > div.deal-percentage') != None:
-            game_original_price = game.select_one('div > div > div > div > div > span > span.price-item').get_text(" ", strip=True).replace('₩', '', 1)
-            game_discount_rate = game.select_one('div > div > div > div > div > div.deal-percentage').get_text(" ", strip=True).translate({ord('-'): '', ord('%'): ''})
-            game_discount_price = game.select_one('div > div > div > div > div > span.price-sales').text.replace('₩', '', 1)
+            game_original_price = game.select_one('div > div > div > div > div > span > span.price-item').text.translate({ord('₩'): '', ord(','): ''}).strip()
+            game_discount_rate = game.select_one('div > div > div > div > div > div.deal-percentage').text.translate({ord('-'): '', ord('%'): ''}).strip()
+            game_discount_price = game.select_one('div > div > div > div > div > span.price-sales').text.translate({ord('₩'): '', ord(','): ''}).strip()
         else:
-            game_original_price = game.select_one('div > div > div > div > div > span.price-sales').text.replace('₩', '', 1)
+            game_original_price = game.select_one('div > div > div > div > div > span.price-sales').text.translate({ord('₩'): '', ord(','): ''}).strip()
             game_discount_rate = 0
-            game_discount_price = None
+            game_discount_price = game_original_price
         client = MongoClient('localhost', 27017)
         db = client.dbsteaminfo
         db.info.update({'title': game_title}, {'platform': 'uplay', 'link': game_link, 'img': game_img, 'title': game_title, 'original_price': game_original_price, 'discount_rate': game_discount_rate, 'discount_price': game_discount_price}, upsert=True)
@@ -68,9 +72,9 @@ def epic_sale():
         game_link = 'https://www.epicgames.com' + game['href']
         game_img = game.select_one('div > div > div > div > div.Picture-picture_6dd45462 > img')['data-image']
         game_title = game.select_one('div > div > div.OfferCard-meta_34c2e3a1 > span.OfferTitleInfo-title_abc02a91').text
-        game_original_price = game.select_one('div > div > div.OfferCard-meta_34c2e3a1 > div > div > s').text.replace('₩', '', 1)
+        game_original_price = game.select_one('div > div > div.OfferCard-meta_34c2e3a1 > div > div > s').text.translate({ord('₩'): '', ord(','): ''}).strip()
         game_discount_rate = game.select_one('div > div > div.OfferCard-meta_34c2e3a1 > div > span.PurchaseTag-tag_9dafbeea').text.translate({ord('-'): '', ord('%'): ''})
-        game_discount_price = game.select_one('div > div > div.OfferCard-meta_34c2e3a1 > div > div > span').text.replace('₩', '', 1)
+        game_discount_price = game.select_one('div > div > div.OfferCard-meta_34c2e3a1 > div > div > span').text.translate({ord('₩'): '', ord(','): ''}).strip()
         client = MongoClient('localhost', 27017)
         db = client.dbsteaminfo
         db.info.update({'title': game_title}, {'platform': 'epic', 'link': game_link, 'img': game_img, 'title': game_title, 'original_price': game_original_price, 'discount_rate': game_discount_rate, 'discount_price': game_discount_price}, upsert=True)
@@ -104,10 +108,11 @@ def humble_sale():
         game_img = game['standard_carousel_image']
         game_original_price = game['full_price']['amount']
         game_discount_price = game['current_price']['amount']
+        game_discount_rate = round((float(game_original_price) - float(game_discount_price)) / float(game_original_price) * 100)
         client = MongoClient('localhost', 27017)
         db = client.dbsteaminfo
-        db.info.update({'title': game_title}, {'platform': 'humblebundle', 'img': game_img, 'title': game_title, 'original_price': game_original_price, 'discount_price': game_discount_price}, upsert=True)
-        db.info.update({'title': game_title}, {'platform': 'humblebundle', 'img': game_img, 'title': game_title, 'original_price': game_original_price, 'discount_price': game_discount_price})
+        db.info.update({'title': game_title}, {'platform': 'humblebundle', 'img': game_img, 'title': game_title, 'original_price': game_original_price, 'discount_rate': game_discount_rate, 'discount_price': game_discount_price}, upsert=True)
+        db.info.update({'title': game_title}, {'platform': 'humblebundle', 'img': game_img, 'title': game_title, 'original_price': game_original_price, 'discount_rate': game_discount_rate, 'discount_price': game_discount_price})
         for a in db.info.find():
             if {a['title'] : { "$eq": game_title }} == 0:
                 db.info.remove(a['title'])
@@ -135,6 +140,36 @@ def gog_sale():
         db = client.dbsteaminfo
         db.info.update({'title': game_title}, {'platform': 'gog', 'link': game_link, 'img': game_img, 'title': game_title, 'original_price': game_original_price, 'discount_rate': game_discount_rate, 'discount_price': game_discount_price}, upsert=True)
         db.info.update({'title': game_title}, {'platform': 'gog', 'link': game_link, 'img': game_img, 'title': game_title, 'original_price': game_original_price, 'discount_rate': game_discount_rate, 'discount_price': game_discount_price})
+        for a in db.info.find():
+            if {a['title'] : { "$eq": game_title }} == 0:
+                db.info.remove(a['title'])
+        return jsonify({'result': 'success'})
+
+@app.route('/direct_info', methods=['POST'])
+def direct_sale():
+    whole_source = ""
+    for page_number in range(1, 4):
+        url = 'https://directg.net/game/game_thumb.html?page=' + str(page_number)
+        response = requests.get(url)
+        whole_source = whole_source + response.text
+    soup = BeautifulSoup(whole_source, 'html.parser')
+    games = soup.select('div.spacer')
+
+    for game in games:
+        game_link = 'https://directg.net/game' + game.select_one('div > a')['href'].replace('.', '', 1)
+        game_img = game.select_one('div > a > img')['src']
+        game_title = game.select_one('div.vm-product-descr-container-1 > a')['title']
+        game_original_price = game.select_one('div.vm3pr-2 > div > div > span.PricebasePrice').text.translate({ord('\\'): '', ord(','): ''}).strip()
+        if game.select_one('div.vm3pr-0 > div > div.addtocart-bar > div > div') != None:
+            game_discount_rate = game.select_one('div.vm3pr-0 > div > div.addtocart-bar > div > div > span').text.replace('%', '').strip()
+            game_discount_price = game.select_one('div.vm3pr-2 > div > div.PricesalesPrice > span.PricesalesPrice').text.replace('\\', '').replace(',','').strip()
+        else:
+            game_discount_rate = 0
+            game_discount_price = game_original_price
+        client = MongoClient('localhost', 27017)
+        db = client.dbsteaminfo
+        db.info.update({'title': game_title}, {'platform': 'direct', 'link': game_link, 'img': game_img, 'title': game_title, 'original_price': game_original_price, 'discount_rate': game_discount_rate, 'discount_price': game_discount_price}, upsert=True)
+        db.info.update({'title': game_title}, {'platform': 'direct', 'link': game_link, 'img': game_img, 'title': game_title, 'original_price': game_original_price, 'discount_rate': game_discount_rate, 'discount_price': game_discount_price})
         for a in db.info.find():
             if {a['title'] : { "$eq": game_title }} == 0:
                 db.info.remove(a['title'])

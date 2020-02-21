@@ -24,4 +24,5 @@ for game in games:
     game_img = game['standard_carousel_image']
     game_original_price = game['full_price']['amount']
     game_discount_price = game['current_price']['amount']
-    print(game_title, game_original_price, game_discount_price)
+    game_discount_rate = round((float(game_original_price) - float(game_discount_price))/float(game_original_price)*100)
+    print(game_title, game_original_price, game_discount_rate, game_discount_price)
