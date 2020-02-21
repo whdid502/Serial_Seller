@@ -12,7 +12,7 @@ def home():
 def game_main_page():
    return render_template('game_sales.html')
 
-@app.route('/page_steam')
+@app.route('/steam_page')
 def game_steam_page():
    return render_template('steam_page.html')
 
@@ -59,6 +59,15 @@ def get_gog_sale():
   output = []
   for s in db.sale.find():
     output.append({'epic_link' : s['epic_link'], 'epic_img': s['epic_img'], 'epic_title' : s['epic_title'], 'epic_original_price' : s['epic_original_price'], 'epic_discount_rate' : s['epic_discount_rate'] , 'epic_discount_price' : s['epic_discount_price']})
+  return jsonify({'result' : output})
+
+@app.route('/test_info', methods=['GET'])
+def test_db():
+  client = MongoClient('localhost', 27017)
+  db = client.dbtestgame
+  output = []
+  for s in db.test.find():
+    output.append({'test_link' : s['link'], 'test_img': s['img'], 'test_title' : s['title'], 'test_original_price' : s['original_price'], 'test_discount_rate' : s['discount_rate'] , 'test_discount_price' : s['discount_price']})
   return jsonify({'result' : output})
 
 if __name__ == '__main__':

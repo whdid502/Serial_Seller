@@ -2,30 +2,34 @@
 
 body{
   background:#333  url('../images/bg.jpg') repeat top left;
-  font-family: 'Yeon Sung', ;
+  font-family: 'arial' ;
 }
 ul.sdt_menu{
   margin-top:150px;
 }
 .st_card_body{
   border: 1px solid white;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-content: space-around;
 }
 .title_style{
-  color : #E6E6E6
+  color : #6E6E6E
 }
 .index_bar_container{
-  position: static;
-  top: 0.5rem;
-  left: 5rem;
-}
-.index_bar_position{
+  width: 300px;
   position: relative;
+  top: 10px;
+  left: 1020px;
 }
 .index_bar_size{
   width: 180px;
-  height: 30px;
+  height: 40px;
+  border-radius:.25rem
 }
 .index_button_size{
-  width: 50px;
-  height: 30px;
+  width: 70px;
+  height: 40px;
 }
