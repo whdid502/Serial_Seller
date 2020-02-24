@@ -16,6 +16,38 @@ def game_main_page():
 def game_steam_page():
    return render_template('steam_page.html')
 
+@app.route('/epic_page')
+def game_epic_page():
+   return render_template('epic_page.html')
+
+@app.route('/uplay_page')
+def game_uplay_page():
+   return render_template('uplay_page.html')
+
+@app.route('/humble_page')
+def game_humble_page():
+   return render_template('humble_page.html')
+
+@app.route('/gog_page')
+def game_gog_page():
+   return render_template('gog_page.html')
+
+@app.route('/directgames_page')
+def game_directgames_page():
+   return render_template('directgames_page.html')
+
+@app.route('/discount_rate_page')
+def game_discount_rate_page():
+   return render_template('discount_rate_page.html')
+
+@app.route('/discount_price_page')
+def game_discount_price_page():
+   return render_template('discount_price_page.html')
+
+@app.route('/mywish_page')
+def game_mywish_page():
+   return render_template('mywish_page.html')
+
 @app.route('/steam_info', methods=['GET'])
 def get_steam_sale():
   client = MongoClient('localhost', 27017)
