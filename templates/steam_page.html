@@ -1,33 +1,24 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!DOCTYPE html>
 <html>
 <head>
-  <title>스팀 25선</title>
+  <title>스팀 판매</title>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <meta name="description" content="Slide Down Box Menu with jQuery and CSS3" />
   <meta name="keywords" content="jquery, css3, sliding, box, menu, cube, navigation, portfolio, thumbnails"/>
   <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon"/>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <!--부트스트랩css-->
   <link rel="stylesheet" href="{{ url_for('static', filename='../static/game_sale_style/basic_style.css') }}">
-  <link href="https://fonts.googleapis.com/css?family=Stylish&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/paginationjs/2.1.4/pagination.css"/>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" type="text/javascript" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/paginationjs/2.1.4/pagination.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-  </script>
+  <link href="https://fonts.googleapis.com/css?family=Stylish&display=swap" rel="stylesheet"><!--구글폰트-->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script><!--ajax요청-->
   <script>
-  $(document).ready(
-    function testcard (){
+
+  $(document).ready(function (api_url) {
       $.ajax({
         type: "GET",
-        url: "http://127.0.0.1:5000/test_info",
+        url: api_url,
         data: [],
         success: function(response){
-          console.log('response ok');
           var test_info = response['result'];
           var card_list = new Array();
           for(i = 0; i < test_info.length; i++){
@@ -36,50 +27,84 @@
             var game_title = test_info[i]['test_title'];
             var game_original_price = test_info[i]['test_original_price'];
             var game_discount_rate = test_info[i]['test_discount_rate'];
-            var game_discount_price = test_info[i]['test_discount_rate'];
-            var game_card_form = '<a href='+ game_link + '><div class="card" style="width: 18rem;">'
+            var game_discount_price = test_info[i]['test_discount_price'];
+            var game_card_form = '<li><a href='+ game_link + '><div class="card" style="width: 18rem;">'
             +'<img src=' + game_img + 'class="card-img-top" alt="...">'+
             +'<div class="card-body">'
             +'<h5 class="card-title">' + game_title + '</h5>'
             +'<p class="card-text">' + game_original_price + '</p>'
-            +'<p class="card-text">' + game_discount_rate + '</p>'
-            +'<p class="card-text">' + game_discount_price + '</p>'
+            +'<p class="card-text" id="card_dc_rate">' + game_discount_rate + '</p>'
+            +'<p class="card-text" id="card_dc_price">' + game_discount_price + '</p>'
             +'</div>'
-            +'</div></a>'
+            +'</div></a></li>'
             card_list.push('card: ' + game_card_form)
+            $('#card_container').append(card_list)
           };
           console.log(card_list);
         }
       });
     })
-    </script>
-  </head>
-  <body>
-    <a href="/serial_seller"><h1 class="title_style">연쇄 할인마(게임할인정보모음)</h1></a>
-    <h2>스팀 판매목록</h2>
-    <div class="dropdown">
-      <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        Dropdown button
-      </button>
-      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        <a class="dropdown-item" href="#">Action</a>
-        <a class="dropdown-item" href="#">Another action</a>
-        <a class="dropdown-item" href="#">Something else here</a>
-      </div>
+    // callpage ('/test_info');
+    $('.change_platform').click(function(){
+      if ($(this).value('id') == 'cp_uplay'){
+        $('#card_container').empty();
+        callpage('/test_info2');
+        alert('유플')
+      }else if ($(this).value('id') == 'cp_gog') {
+        $('#card_container').empty();
+        callpage('/test_info');
+        alert('GOG')
+      }else if ($(this).value('id') == 'cp_epic') {
+        $('#card_container').empty();
+        callpage('/test_info2');
+        alert('에픽')
+      }else if ($(this).value('id') == 'cp_humble') {
+        $('#card_container').empty();
+        callpage('/test_info');
+        alert('험블')
+      }
+    });
+    $('.change_sort').click(function(){
+      if ($(this).text() == '최저 판매가'){
+
+      }
+      else if (($(this).text() == '최고 할인율')) {
+
+      };
+    });
+
+  </script>
+</head>
+<body>
+  <a href="/serial_seller"><h1 class="title_style">연쇄 할인마(게임할인정보모음)</h1></a>
+  <h2>스팀 판매목록</h2>
+  <div class="dropdown">
+    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      정렬방법변경
+    </button>
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+      <button class="dropdown-item change_sort">최저 판매가</button>
+      <button class="dropdown-item change_sort">최고 할인율</button>
     </div>
-    <table id="testTable" border="1">
-      <thead>
-        <tr>
-          <td><label>
-            <input type="checkbox">
-          </label></td>
-          <td>번호</td>
-          <td>내용</td>
-        </tr>
-      </thead>
-      <tbody>
-      </tbody>
-    </table>
-    <div id="pagination" style="text-align: center"></div>
-  </body>
-  </html>
+  </div>
+  <div class="dropdown">
+    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      다른 플랫폼 보기
+    </button>
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+      <button id="cp_uplay" class="dropdown-item change_platform">유플레이</button>
+      <button id="cp_gog" class="dropdown-item change_platform">GOG</button>
+      <button id="cp_epic" class="dropdown-item change_platform">에픽게임즈</button>
+      <button id="cp_humble" class="dropdown-item change_platform">험블번들</button>
+    </div>
+  </div>
+  <ul id="card_container">
+
+  </ul>
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+  <!--부트스트랩js-->
+
+</body>
+</html>

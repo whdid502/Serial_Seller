@@ -102,5 +102,15 @@ def test_db():
     output.append({'test_link' : s['link'], 'test_img': s['img'], 'test_title' : s['title'], 'test_original_price' : s['original_price'], 'test_discount_rate' : s['discount_rate'] , 'test_discount_price' : s['discount_price']})
   return jsonify({'result' : output})
 
+@app.route('/test_info2', methods=['GET'])
+def test2_db():
+  client = MongoClient('localhost', 27017)
+  db = client.dbtestgame2
+  output = []
+  for s in db.test.find():
+    output.append({'test_link' : s['link'], 'test_img': s['img'], 'test_title' : s['title'], 'test_original_price' : s['original_price'], 'test_discount_rate' : s['discount_rate'] , 'test_discount_price' : s['discount_price']})
+  return jsonify({'result' : output})
+
+
 if __name__ == '__main__':
    app.run('0.0.0.0',port=5000,debug=True)
