@@ -62,6 +62,21 @@
         .animate({'top':'25px'},500);
       });
     });
+    $('#steam').click(
+      $.ajax({
+          url:'/sell_page' // 요청 할 주소
+          // async:true,// false 일 경우 동기 요청으로 변경
+          type:'GET' // GET, PUT
+          data: {
+              platform:$(this).val(id),
+          },// 전송할 데이터
+          dataType:'text',// xml, json, script, html
+          success:alert('성공') {},// 요청 완료 시
+      });
+
+
+      출처: https://webinformation.tistory.com/22 [끄적끄적]
+    )
     </script>
   </head>
   <body>
@@ -86,7 +101,7 @@
               <span class="sdt_descr"></span>
             </span>
           <div class="sdt_box">
-            <a href="/steam_page">스팀</a>
+            <a id="steam" href="/sell_page">스팀</a>
             <a href="/uplay_page">유플레이</a>
             <a href="/gog_page">GOG.COM</a>
             <a href="/epic_page">에픽게임즈</a>

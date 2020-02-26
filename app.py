@@ -10,11 +10,18 @@ def home():
 
 @app.route('/serial_seller')
 def game_main_page():
+    # paradict = {'platform':platform, }
    return render_template('game_sales.html')
 
-@app.route('/steam_page')
-def game_steam_page():
-   return render_template('steam_page.html')
+url = '/sell_page'
+@app.route(url)
+def get_sell_page():
+    return render_template('steam_page.html')
+
+
+@app.route('/sell_page')
+def game_sell_page():
+   return render_template('sell_page.html')
 
 @app.route('/epic_page')
 def game_epic_page():
