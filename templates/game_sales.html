@@ -65,7 +65,7 @@
     $('#steam').click(
       $.ajax({
           url:'/sell_page' // 요청 할 주소
-          // async:true,// false 일 경우 동기 요청으로 변경
+          async:true,// false 일 경우 동기 요청으로 변경
           type:'GET' // GET, PUT
           data: {
               platform:$(this).val(id),
@@ -73,9 +73,6 @@
           dataType:'text',// xml, json, script, html
           success:alert('성공') {},// 요청 완료 시
       });
-
-
-      출처: https://webinformation.tistory.com/22 [끄적끄적]
     )
     </script>
   </head>
