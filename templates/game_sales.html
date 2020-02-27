@@ -62,30 +62,21 @@
         .animate({'top':'25px'},500);
       });
     });
-    $('#steam').click(
-      $.ajax({
-          url:'/sell_page' // 요청 할 주소
-          async:true,// false 일 경우 동기 요청으로 변경
-          type:'GET' // GET, PUT
-          data: {
-              platform:$(this).val(id),
-          },// 전송할 데이터
-          dataType:'text',// xml, json, script, html
-          success:alert('성공') {},// 요청 완료 시
-      });
-    )
+
+
+
     </script>
   </head>
   <body>
     <div class="index_bar_container">
 
-    <div class="input-group mb-3">
-      <input type="text" class="index_bar_size" placeholder="게임을 검색하세요" aria-label="Recipient's username" aria-describedby="button-addon2">
-      <div class="input-group-append">
-        <button class="btn btn-outline-secondary index7e7. index_button_size" type="button" id="button-addon2">검색</button>
+      <div class="input-group mb-3">
+        <input type="text" class="index_bar_size" placeholder="게임을 검색하세요" aria-label="Recipient's username" aria-describedby="button-addon2">
+        <div class="input-group-append">
+          <button class="btn btn-outline-secondary index7e7. index_button_size" type="button" id="button-addon2">검색</button>
+        </div>
       </div>
     </div>
-  </div>
     <div class="content">
       <a href="/serial_seller"><h1 class="title_style">연쇄 할인마(게임할인정보모음)</h1></a>
       <ul id="sdt_menu" class="sdt_menu">
@@ -97,63 +88,67 @@
               <span class="sdt_link">공식 플랫폼</span>
               <span class="sdt_descr"></span>
             </span>
-          <div class="sdt_box">
-            <a id="steam" href="/sell_page">스팀</a>
-            <a href="/uplay_page">유플레이</a>
-            <a href="/gog_page">GOG.COM</a>
-            <a href="/epic_page">에픽게임즈</a>
-            <a href="/humble_page">험블번들</a>
-          </div>
-        </a>
+            <div class="sdt_box">
+              <form action="/sell_page" method="get">
+                <input name="platform" type="submit" value="steam"></input>
+                <input name="platform" type="submit" value="uplay"></input>
+                <input name="platform" type="submit" value="GOG.com"></input>
+                <input name="platform" type="submit" value="epicgaems"></input>
+                <input name="platform" type="submit" value="humblebundle"></input>
+              </form>
+            </div>
+          </a>
         </li>
         <li>
           <a href="/directgames_page"
-            <img src="../static/images/2.jpg" alt=""/>
-            <span class="sdt_active"></span>
-            <span class="sdt_wrap">
-              <span class="sdt_link">리셀러 사이트</span>
-              <span class="sdt_descr"></span>
-            </span>
+          <img src="../static/images/2.jpg" alt=""/>
+          <span class="sdt_active"></span>
+          <span class="sdt_wrap">
+            <span class="sdt_link">리셀러 사이트</span>
+            <span class="sdt_descr"></span>
+          </span>
           <div class="sdt_box">
-            <a href="/directgames_page">다이렉트게임즈</a>
+            <form action="/sell_page" method="get">
+            <input name="platform" type="submit" value="directgames"></input>
+          </form>
           </div>
         </a>
-        </li>
-        <li>
-          <a href="/discount_price_page">
-            <img src="../static/images/1.jpg" alt=""/>
-            <span class="sdt_active"></span>
-            <span class="sdt_wrap">
-              <span class="sdt_link">최저가!</span>
-              <span class="sdt_descr">앗! 게임, 신발보다 싸다</span>
-            </span>
-          </a>
-        </li>
-        <li>
-          <a href="/discount_rate_page">
-            <img src="../static/images/1.jpg" alt=""/>
-            <span class="sdt_active"></span>
-            <span class="sdt_wrap">
-              <span class="sdt_link">최고할인율!</span>
-              <span class="sdt_descr">사장님의 무친판단</span>
-            </span>
-          </a>
-        </li>
-        <li>
-          <a href="/mywish_page">
-            <img src="../static/images/1.jpg" alt=""/>
-            <span class="sdt_active"></span>
-            <span class="sdt_wrap">
-              <span class="sdt_link">내 목록</span>
-              <span class="sdt_descr">찜바구니</span>
-            </span>
-          </a>
-        </li>
-      </ul>
-    </div>
-    <div>
-    </div>
+      </li>
+      <li>
+        <a href="/discount_price_page">
+          <img src="../static/images/1.jpg" alt=""/>
+          <span class="sdt_active"></span>
+          <span class="sdt_wrap">
+            <span class="sdt_link">최저가!</span>
+            <span class="sdt_descr">앗! 게임, 신발보다 싸다</span>
+          </span>
+        </a>
+      </li>
+      <li>
+        <a href="/discount_rate_page">
+          <img src="../static/images/1.jpg" alt=""/>
+          <span class="sdt_active"></span>
+          <span class="sdt_wrap">
+            <span class="sdt_link">최고할인율!</span>
+            <span class="sdt_descr">사장님의 무친판단</span>
+          </span>
+        </a>
+      </li>
+      <li>
+        <a href="/mywish_page">
+          <img src="../static/images/1.jpg" alt=""/>
+          <span class="sdt_active"></span>
+          <span class="sdt_wrap">
+            <span class="sdt_link">내 목록</span>
+            <span class="sdt_descr">찜바구니</span>
+          </span>
+        </a>
+      </li>
+    </ul>
+  </div>
+  <div>
+  </div>
 
-    <!-- The JavaScript -->
-  </body>
-  </html>
+  <!-- The JavaScript -->
+</body>
+</html>

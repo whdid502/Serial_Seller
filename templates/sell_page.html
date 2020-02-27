@@ -12,73 +12,32 @@
   <link href="https://fonts.googleapis.com/css?family=Stylish&display=swap" rel="stylesheet"><!--구글폰트-->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script><!--ajax요청-->
   <script>
-
-  $(document).ready(function (api_url) {
-      $.ajax({
-        type: "GET",
-        url: api_url,
-        data: [],
-        success: function(response){
-          var test_info = response['result'];
-          var card_list = new Array();
-          for(i = 0; i < test_info.length; i++){
-            var game_link = test_info[i]['test_link']
-            var game_img = test_info[i]['test_img'];
-            var game_title = test_info[i]['test_title'];
-            var game_original_price = test_info[i]['test_original_price'];
-            var game_discount_rate = test_info[i]['test_discount_rate'];
-            var game_discount_price = test_info[i]['test_discount_price'];
-            var game_card_form = '<li><a href='+ game_link + '><div class="card" style="width: 18rem;">'
-            +'<img src=' + game_img + 'class="card-img-top" alt="...">'+
-            +'<div class="card-body">'
-            +'<h5 class="card-title">' + game_title + '</h5>'
-            +'<p class="card-text">' + game_original_price + '</p>'
-            +'<p class="card-text" id="card_dc_rate">' + game_discount_rate + '</p>'
-            +'<p class="card-text" id="card_dc_price">' + game_discount_price + '</p>'
-            +'</div>'
-            +'</div></a></li>'
-            card_list.push('card: ' + game_card_form)
-            $('#card_container').append(card_list)
-          };
-          console.log(card_list);
-        }
-      });
-    })
-    // callpage ('/test_info');
-    $('.change_platform').click(function(){
-      if ($(this).value('id') == 'cp_uplay'){
-        $('#card_container').empty();
-        callpage('/test_info2');
-        alert('유플')
-      }else if ($(this).value('id') == 'cp_gog') {
-        $('#card_container').empty();
-        callpage('/test_info');
-        alert('GOG')
-      }else if ($(this).value('id') == 'cp_epic') {
-        $('#card_container').empty();
-        callpage('/test_info2');
-        alert('에픽')
-      }else if ($(this).value('id') == 'cp_humble') {
-        $('#card_container').empty();
-        callpage('/test_info');
-        alert('험블')
-      }
-    });
-    $('.change_sort').click(function(){
-      if ($(this).text() == '최저 판매가'){
-
-      }
-      else if (($(this).text() == '최고 할인율')) {
-
-      };
-    });
-
+  // function search_params(key) {
+  //   return new URLSearchParams(location.search).get(key);
+  // };
+  // console.log(search_params(platform));
+  function get_query_string_object() {
+    var a = window.location.search.substr(1).split('&');
+    if (a == "") return {};
+    var b = {};
+    for (var i = 0; i < a.length; ++i) {
+        var p = a[i].split('=', 2);
+        if (p.length == 1)
+            b[p[0]] = "";
+        else
+            b[p[0]] = decodeURIComponent(p[1].replace(/\+/g, " "));
+    }
+    return b;
+}
+var params = get_query_string_object();
+var platform = params.platform;
+console.log(platform);
   </script>
 </head>
 <body>
   <a href="/serial_seller"><h1 class="title_style">연쇄 할인마(게임할인정보모음)</h1></a>
   <h2>스팀 판매목록</h2>
-  <div class="dropdown">
+  <!-- <div class="dropdown">
     <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
       정렬방법변경
     </button>
@@ -97,7 +56,7 @@
       <button id="cp_epic" class="dropdown-item change_platform">에픽게임즈</button>
       <button id="cp_humble" class="dropdown-item change_platform">험블번들</button>
     </div>
-  </div>
+  </div> -->
   <ul id="card_container">
 
   </ul>
