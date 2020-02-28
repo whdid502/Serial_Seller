@@ -31,7 +31,39 @@
 }
 var params = get_query_string_object();
 var platform = params.platform;
+if(platform == 'GOG.com'){
+  platform = 'gog'
+}else if (platform == 'epicgames'){
+  platform = 'epic'
+}else if (platform == 'humblebundle'){
+  platform = 'humble'
+}else if (platform == 'directgames'){
+  platform = 'direct'
+}else{
+  platform = platform
+}
 console.log(platform);
+$(document).ready(
+  $.ajax({
+    type: "GET",
+    url: "/all_games_info?platform=" + platform + "&sort=discount_price&order=asc",
+    data: {},
+    success: function(response){
+      console.log('good');
+      var game_data = response['result']
+      for(var i = 0; i < game_data.length; i++){
+        var game_platform = game_data[i]['platform']
+        var game_title = game_data[i]['title']
+        var game_img = game_data[i]['img']
+        var game_link = game_data[i]['link']
+        var game_original_price = game_data[i]['original_price']
+        var game_discount_rate = game_data[i]['discount_rate']
+        var game_discount_price = game_data[i]['discount_price']
+        $('#game_td').append("<tr><a href=" + game_link + "><td>" + game_platform + "</td><td>" + game_title + "</td><td>" + game_original_price + "</td><td>" + game_discount_rate + "</td><td>" + game_discount_price + "</td></a></tr>")
+      }
+    }
+})
+)
   </script>
 </head>
 <body>
@@ -57,6 +89,19 @@ console.log(platform);
       <button id="cp_humble" class="dropdown-item change_platform">험블번들</button>
     </div>
   </div> -->
+  <table id="all_games_table">
+    <thead>
+      <tr>
+        <td>플랫폼</td>
+        <td>게임</td>
+        <td>원가</td>
+        <td>할인율</td>
+        <td>할인가</td>
+      </tr>
+    </thead>
+    <tbody id="game_td">
+    </tbody>
+  </table>
   <ul id="card_container">
 
   </ul>
