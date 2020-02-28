@@ -4,8 +4,6 @@ import pymongo
 import requests
 from bs4 import BeautifulSoup
 app = Flask(__name__)
-client = MongoClient('localhost', 27017)
-db = client.dbgaem_sales_info
 
 @app.route('/')
 def home():
@@ -46,7 +44,7 @@ def get_steam_sale():
 
   for s in result_db:
       output.append(
-          {'platform': s['platform'], 'img': s['img'], 'title': s['title'], 'original_price': s['original_price'],
+          {'platform': s['platform'], 'link': s['link'], 'img': s['img'], 'title': s['title'], 'original_price': s['original_price'],
            'discount_rate': s['discount_rate'], 'discount_price': s['discount_price']})
   return jsonify({'result': output})
   #

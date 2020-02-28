@@ -39,10 +39,7 @@ def steam_sale():
         # for a in db.info.find():
         #     if {a['title'] : { "$eq": game_title }} == 0:
         #         db.info.remove(a['title'])
-        db.info.insert_one
-        {'platform': 'steam', 'link': game_link, 'img': game_img, 'title': game_title,
-         'original_price': game_original_price, 'discount_rate': game_discount_rate,
-         'discount_price': game_discount_price}
+        db.info.insert_one({'platform': 'steam', 'link': game_link, 'img': game_img, 'title': game_title, 'original_price': game_original_price, 'discount_rate': game_discount_rate,'discount_price': game_discount_price})
         # print({'platform': 'steam', 'link': game_link, 'img': game_img, 'title': game_title,
         #  'original_price': game_original_price, 'discount_rate': game_discount_rate,
         #  'discount_price': game_discount_price})
@@ -75,10 +72,7 @@ def uplay_sale():
         # for a in db.info.find():
         #     if {a['title'] : { "$eq": game_title }} == 0:
         #         db.info.remove(a['title'])
-        db.info.insert_one
-        {'platform': 'uplay', 'link': game_link, 'img': game_img, 'title': game_title,
-         'original_price': game_original_price, 'discount_rate': game_discount_rate,
-         'discount_price': game_discount_price}
+        db.info.insert_one({'platform': 'uplay', 'link': game_link, 'img': game_img, 'title': game_title, 'original_price': game_original_price, 'discount_rate': game_discount_rate, 'discount_price': game_discount_price})
 uplay_sale()
 
 def epic_sale():
@@ -108,10 +102,7 @@ def epic_sale():
         # for a in db.info.find():
         #     if {a['title'] : { "$eq": game_title }} == 0:
         #         db.info.remove(a['title'])
-        db.info.insert_one
-        {'platform': 'epic', 'link': game_link, 'img': game_img, 'title': game_title,
-         'original_price': game_original_price, 'discount_rate': game_discount_rate,
-         'discount_price': game_discount_price}
+        db.info.insert_one({'platform': 'epic', 'link': game_link, 'img': game_img, 'title': game_title, 'original_price': game_original_price, 'discount_rate': game_discount_rate, 'discount_price': game_discount_price})
 epic_sale()
 
 def humble_sale():
@@ -153,10 +144,7 @@ def humble_sale():
         # for a in db.info.find():
         #     if {a['title'] : { "$eq": game_title }} == 0:
         #         db.info.remove(a['title'])
-        db.info.insert_one
-        {'platform': 'humble', 'link': game_link, 'img': game_img, 'title': game_title,
-         'original_price': game_original_price, 'discount_rate': game_discount_rate,
-         'discount_price': game_discount_price, 'original_price_usd' : game_original_price_usd, 'discount_price_usd' : game_discount_price_usd}
+        db.info.insert_one({'platform': 'humble', 'link': game_link, 'img': game_img, 'title': game_title, 'original_price': game_original_price, 'discount_rate': game_discount_rate, 'discount_price': game_discount_price, 'original_price_usd' : game_original_price_usd, 'discount_price_usd' : game_discount_price_usd})
 humble_sale()
 
 def gog_sale():
@@ -184,7 +172,7 @@ def gog_sale():
             exchange = requests.get(url).json()
             return exchange[0]['basePrice']
         krw = upbit_get_usd_krw()
-        game_discount_price = round(game_original_price_usd * krw)
+        game_discount_price = round(game_discount_price_usd * krw)
         game_original_price = round(game_original_price_usd * krw)
         client = MongoClient('localhost', 27017)
         db = client.dball_games
@@ -193,10 +181,7 @@ def gog_sale():
         # for a in db.info.find():
         #     if {a['title'] : { "$eq": game_title }} == 0:
         #         db.info.remove(a['title'])
-        db.info.insert_one
-        {'platform': 'gog', 'link': game_link, 'img': game_img, 'title': game_title,
-         'original_price': game_original_price, 'discount_rate': game_discount_rate,
-         'discount_price': game_discount_price, 'original_price_usd' : game_original_price_usd, 'discount_price_usd' : game_discount_price_usd}
+        db.info.insert_one({'platform': 'gog', 'link': game_link, 'img': game_img, 'title': game_title, 'original_price': game_original_price, 'discount_rate': game_discount_rate, 'discount_price': game_discount_price, 'original_price_usd' : game_original_price_usd, 'discount_price_usd' : game_discount_price_usd})
 gog_sale()
 
 def direct_sale():
@@ -229,10 +214,7 @@ def direct_sale():
         # for a in db.info.find():
         #     if {a['title'] : { "$eq": game_title }} == 0:
         #         db.info.remove(a['title'])
-        db.info.insert_one
-        {'platform': 'direct', 'link': game_link, 'img': game_img, 'title': game_title,
-         'original_price': game_original_price, 'discount_rate': game_discount_rate,
-         'discount_price': game_discount_price}
+        db.info.insert_one({'platform': 'direct', 'link': game_link, 'img': game_img, 'title': game_title, 'original_price': game_original_price, 'discount_rate': game_discount_rate, 'discount_price': game_discount_price})
 direct_sale()
 
 
