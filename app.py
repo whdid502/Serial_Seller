@@ -11,74 +11,40 @@ db = client.dbgaem_sales_info
 def home():
    return render_template('index.html')
 
-
-
 @app.route('/serial_seller', methods = ['POST', 'GET'])
 def game_main_page():
-#
-#     # url sample
-#     # '/sell_page?platform=steam&sort=price&order=desc'
-#     # '/sell_page?platform=all&sort=rate&order=asc'
-#
-#     if request.method == ['POST']:
-#         pass
-#     elif request.method == ['GET']:
-#         platform = request.args.get('platform')
-#         sort_condition = request.args.get('sort')
-#         sort_order = request.args.get('order')
-#     # platform = request.form['platform']
-# #     sort_condition = request.form['sort']
-# #     sort_order = request.form['order']
-# #
-#     if platform in ['steam', 'uplay', 'epicgames', 'directgames', 'humblebundle', 'GOG.com']:
-#         filtered_db = db.info.find({'platform': platform})
-#     else:
-#         filtered_db = db.info.find()
-
-#     if sort_order == "asc":
-#         sort_order = pymongo.ASCENDING
-#     else:
-#         sort_order = pymongo.DESCENDING
-#
-
-#
-#     if sort_condition in ['discount_price', 'discount_rate']:
-#         result_db = filtered_db.sort(sort_condition, sort_order)
-#     else:
-#         result_db = filtered_db.sort("page", pymongo.ASCENDING)
-#
    return render_template('game_sales.html')
 
-@app.route('/all_games_info', methods=['GET'])
+@app.route('/all_games_info')
 def get_steam_sale():
   client = MongoClient('localhost', 27017)
-  db = client.dbgame_sales_info
-  # # url sample
-  # # '/sell_page?platform=steam&sort=price&order=desc'
-  # # '/sell_page?platform=all&sort=rate&order=asc'
+  db = client.dball_games
 
-  # platform = request.args.get['platform']
-  # sort_condition = request.args['sort']
-  # sort_order = request.args['order']
-  #
-  # for platform_db in ['steam', 'uplay', 'epic', 'directgames', 'humble', 'gog']:
-  #     filtered_db = db.info.find({'platform': platform_db})
-  # else:
-  #     filtered_db = db.info.find()
-  #
-  # if sort_order == 'asc':
-  #     sort_order = pymongo.ASCENDING
-  # else:
-  #     sort_order = pymongo.DESCENDING
-  #
-  # if sort_condition in ['discount_price', 'discount_rate', 'orginal_price']:
-  #     result_db = filtered_db.sort(sort_condition, sort_order)
-  # else:
-  #     result_db = filtered_db.sort('page', pymongo.ASCENDING)
+  platform = request.args['platform']
+  sort_condition = request.args['sort']
+  sort_order = request.args['order']
+  # sale_page = request.args['page']
+
+  if platform in ['steam', 'uplay', 'epic', 'direct', 'humble', 'gog']:
+      filtered_db = db.info.find({'platform': platform})
+  else:
+      filtered_db = db.info.find()
+
+  if sort_order == 'asc':
+      sort_order = pymongo.ASCENDING
+  else:
+      sort_order = pymongo.DESCENDING
+
+  if sort_condition in ['discount_price', 'discount_rate', 'orginal_price']:
+      result_db = filtered_db.sort(sort_condition, sort_order)
+  else:
+      result_db = filtered_db.sort('page', pymongo.ASCENDING)
+
+  # if sale_page in
 
   output=[]
 
-  for s in db.info.find():
+  for s in result_db:
       output.append(
           {'platform': s['platform'], 'img': s['img'], 'title': s['title'], 'original_price': s['original_price'],
            'discount_rate': s['discount_rate'], 'discount_price': s['discount_price']})
