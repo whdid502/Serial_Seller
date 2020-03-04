@@ -227,3 +227,9 @@ def direct_sale():
         #         db.info.remove(a['title'])
         db.info.insert_one({'platform': 'direct', 'link': game_link, 'img': game_img, 'title': game_title, 'original_price': game_original_price, 'discount_rate': game_discount_rate, 'discount_price': game_discount_price})
 
+steam_sale()
+uplay_sale()
+epic_sale()
+humble_sale()
+gog_sale()
+direct_sale()
