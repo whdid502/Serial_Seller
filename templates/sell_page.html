@@ -46,7 +46,7 @@ console.log(platform);
 $(document).ready(
   $.ajax({
     type: "GET",
-    url: "/all_games_info?platform=" + platform + "&sort=discount_price&order=asc",
+    url: "/all_games_info?platform=" + platform + "&sort=discount_rate&order=asc",
     data: {},
     success: function(response){
       console.log('good');

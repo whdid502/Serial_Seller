@@ -18,27 +18,32 @@ def get_steam_sale():
   client = pymongo.MongoClient("mongodb://13.209.3.126:27017")
   db = client.dball_games
 
-  platform = request.args['pla00000tform']
+  platform = request.args['platform']
   sort_condition = request.args['sort']
   sort_order = request.args['order']
-  # sale_page = request.args['page']
+  sort_page = request.args['page']
 
   if platform in ['steam', 'uplay', 'epic', 'direct', 'humble', 'gog']:
       filtered_db = db.info.find({'platform': platform})
-  else:
+  elif platform == 'all':
       filtered_db = db.info.find()
 
   if sort_order == 'asc':
       sort_order = pymongo.ASCENDING
-  else:
+  elif sort_order == 'dsc':
       sort_order = pymongo.DESCENDING
 
   if sort_condition in ['discount_price', 'discount_rate', 'orginal_price']:
-      result_db = filtered_db.sort(sort_condition, sort_order)
+      intermediate_db = filtered_db.sort(sort_condition, sort_order)
   else:
-      result_db = filtered_db.sort('page', pymongo.ASCENDING)
+      intermediate_db = filtered_db.sort('page', pymongo.ASCENDING)
 
-  # if sale_page in
+
+  sort_page = int(sort_page)
+  if sort_page in range(1,100):
+      result_db = intermediate_db.skip(sort_page-1).limit(8)
+  else:
+      result_db = intermediate_db
 
   output=[]
 
