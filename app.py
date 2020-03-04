@@ -18,7 +18,7 @@ def get_steam_sale():
   client = pymongo.MongoClient("mongodb://13.209.3.126:27017")
   db = client.dball_games
 
-  platform = request.args['platform']
+  platform = request.args['pla00000tform']
   sort_condition = request.args['sort']
   sort_order = request.args['order']
   # sale_page = request.args['page']
