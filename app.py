@@ -15,7 +15,7 @@ def game_main_page():
 
 @app.route('/all_games_info')
 def get_steam_sale():
-  client = MongoClient('localhost', 27017)
+  client = pymongo.MongoClient("mongodb://13.209.3.126:27017")
   db = client.dball_games
 
   platform = request.args['platform']

@@ -18,11 +18,21 @@ games_2nd_value = games_2nd_dic.setdefault('results')
 games_3rd_value = games_3rd_dic.setdefault('results')
 games_4th_value = games_4th_dic.setdefault('results')
 games = games_1st_value + games_2nd_value + games_3rd_value + games_4th_value
-
 for game in games:
     game_title = game['human_name']
     game_img = game['standard_carousel_image']
-    game_original_price = game['full_price']['amount']
-    game_discount_price = game['current_price']['amount']
-    game_discount_rate = round((float(game_original_price) - float(game_discount_price))/float(game_original_price)*100)
-    print(game_title, game_original_price, game_discount_rate, game_discount_price)
+    game_original_price_usd = game['full_price']['amount']
+    game_link = 'https://www.humblebundle.com/store/search?sort=discount&filter=onsale&hmb_source=store_navbar'
+    game_discount_price_usd = game['current_price']['amount']
+
+    def upbit_get_usd_krw():
+        url = 'https://quotation-api-cdn.dunamu.com/v1/forex/recent?codes=FRX.KRWUSD'
+        exchange = requests.get(url).json()
+        return exchange[0]['basePrice']
+
+    krw = upbit_get_usd_krw()
+    game_original_price = round(game_original_price_usd * krw)
+    game_discount_price = round(game_discount_price_usd * krw)
+    game_discount_rate = round((game_original_price_usd - game_discount_price_usd)/game_original_price_usd*100)
+
+    print(game_title, game_original_price_usd, game_original_price, game_discount_rate, game_discount_price_usd, game_discount_price)

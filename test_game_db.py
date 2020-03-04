@@ -83,14 +83,23 @@ def epic_sale():
     for game in games:
         game_link = 'https://www.epicgames.com' + game['href']
         game_img = game.select_one('div > div > div > div > div.Picture-picture_6dd45462 > img')['data-image']
-        game_title = game.select_one('div > div > div.OfferCard-meta_34c2e3a1 > span.OfferTitleInfo-title_abc02a91').text
-        if game.select_one('div > div > div.OfferCard-meta_34c2e3a1 > div > span.PurchaseTag-tag_9dafbeea') != None:
-            game_original_price = game.select_one('div > div > div.OfferCard-meta_34c2e3a1 > div > div > s').text.translate({ord('₩'): '', ord(','): ''}).strip()
-            game_discount_rate = game.select_one('div > div > div.OfferCard-meta_34c2e3a1 > div > span.PurchaseTag-tag_9dafbeea').text.translate({ord('-'): '', ord('%'): ''})
-            game_discount_price = game.select_one('div > div > div.OfferCard-meta_34c2e3a1 > div > div > span').text.translate({ord('₩'): '', ord(','): ''}).strip()
+        game_title = game.select_one(
+            'div > div > div.OfferCard-meta_34c2e3a1 > span.OfferTitleInfo-title_abc02a91').text
+        if game.select_one('div > div > div.OfferCard-meta_34c2e3a1 > div > span') != None:
+            game_original_price = game.select_one(
+                'div > div > div.OfferCard-meta_34c2e3a1 > div > div > s').text.translate(
+                {ord('₩'): '', ord(','): ''}).strip()
+            game_discount_rate = game.select_one(
+                'div > div > div.OfferCard-meta_34c2e3a1 > div > span.PurchaseTag-tag_452447bf').text.translate(
+                {ord('-'): '', ord('%'): ''})
+            game_discount_price = game.select_one(
+                'div > div > div.OfferCard-meta_34c2e3a1 > div > div > span').text.translate(
+                {ord('₩'): '', ord(','): ''}).strip()
         else:
             game_discount_rate = 0
-            game_original_price =  game.select_one('div > div > div.OfferCard-meta_34c2e3a1 > div > div > span').text.translate({ord('₩'): '', ord(','): ''}).strip()
+            game_original_price = game.select_one(
+                'div > div > div.OfferCard-meta_34c2e3a1 > div > div > span').text.translate(
+                {ord('₩'): '', ord(','): ''}).strip()
             game_discount_price = game_original_price
         game_discount_price = int(game_discount_price)
         game_discount_rate = int(game_discount_rate)
@@ -129,14 +138,16 @@ def humble_sale():
         game_original_price_usd = game['full_price']['amount']
         game_link = 'https://www.humblebundle.com/store/search?sort=discount&filter=onsale&hmb_source=store_navbar'
         game_discount_price_usd = game['current_price']['amount']
-        game_discount_rate = round((float(game_original_price_usd) - float(game_discount_price_usd) / float(game_original_price_usd) * 100))
+
         def upbit_get_usd_krw():
             url = 'https://quotation-api-cdn.dunamu.com/v1/forex/recent?codes=FRX.KRWUSD'
             exchange = requests.get(url).json()
             return exchange[0]['basePrice']
+
         krw = upbit_get_usd_krw()
         game_original_price = round(game_original_price_usd * krw)
         game_discount_price = round(game_discount_price_usd * krw)
+        game_discount_rate = round((game_original_price_usd - game_discount_price_usd) / game_original_price_usd * 100)
         client = MongoClient('localhost', 27017)
         db = client.dball_games
         # db.info.update_many({'title': game_title}, {'platform': 'humblebundle', 'img': game_img, 'title': game_title, 'original_price': game_original_price, 'discount_rate': game_discount_rate, 'discount_price': game_discount_price}, upsert=True)
@@ -159,18 +170,19 @@ def gog_sale():
     games = games_1st_value + games_2nd_value
     for game in games:
         game_link = 'https://www.gog.com/' + game['url']
-        game_title = game['slug']
+        game_title = game['title']
         game_img = 'http:' + game['image'] + '_product_tile_256.jpg'
         game_original_price_usd = game['price']['baseAmount']
         game_discount_rate = game['price']['discountPercentage']
-        game_discount_price_usd = game['price']['amount']
+        game_discount_price_usd = game['price']['finalAmount']
         game_discount_price_usd = float(game_discount_price_usd)
-        game_discount_rate = float(game_discount_rate)
         game_original_price_usd = float(game_original_price_usd)
+
         def upbit_get_usd_krw():
             url = 'https://quotation-api-cdn.dunamu.com/v1/forex/recent?codes=FRX.KRWUSD'
             exchange = requests.get(url).json()
             return exchange[0]['basePrice']
+
         krw = upbit_get_usd_krw()
         game_discount_price = round(game_discount_price_usd * krw)
         game_original_price = round(game_original_price_usd * krw)
@@ -189,6 +201,8 @@ def direct_sale():
     for page_number in range(1, 4):
         url = 'https://directg.net/game/game_thumb.html?page=' + str(page_number)
         response = requests.get(url)
+        response.raise_for_status()
+        response.encoding = None
         whole_source = whole_source + response.text
     soup = BeautifulSoup(whole_source, 'html.parser')
     games = soup.select('div.spacer')
@@ -197,10 +211,15 @@ def direct_sale():
         game_link = 'https://directg.net/game' + game.select_one('div > a')['href'].replace('.', '', 1)
         game_img = game.select_one('div > a > img')['src']
         game_title = game.select_one('div.vm-product-descr-container-1 > a')['title']
-        game_original_price = game.select_one('div.vm3pr-2 > div > div > span.PricebasePrice').text.translate({ord('\\'): '', ord(','): ''}).strip()
+        game_original_price = game.select_one('div.vm3pr-2 > div > div > span.PricebasePrice').text.translate(
+            {ord('\\'): '', ord(','): ''}).strip()
         if game.select_one('div.vm3pr-0 > div > div.addtocart-bar > div > div') != None:
-            game_discount_rate = game.select_one('div.vm3pr-0 > div > div.addtocart-bar > div > div > span').text.replace('%', '').strip()
-            game_discount_price = game.select_one('div.vm3pr-2 > div > div.PricesalesPrice > span.PricesalesPrice').text.replace('\\', '').replace(',','').strip()
+            game_discount_rate = game.select_one(
+                'div.vm3pr-0 > div > div.addtocart-bar > div > div > span').text.replace(
+                '%', '').strip()
+            game_discount_price = game.select_one(
+                'div.vm3pr-2 > div > div.PricesalesPrice > span.PricesalesPrice').text.replace('\\', '').replace(',',
+                                                                                                                 '').strip()
         else:
             game_discount_rate = 0
             game_discount_price = game_original_price
