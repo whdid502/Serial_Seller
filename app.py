@@ -41,7 +41,7 @@ def get_steam_sale():
 
   sort_page = int(sort_page)
   if sort_page in range(1,100):
-      result_db = intermediate_db.skip(sort_page-1).limit(8)
+      result_db = intermediate_db.skip((sort_page-1)*8).limit(8)
   else:
       result_db = intermediate_db
 
