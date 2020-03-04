@@ -12,7 +12,7 @@ usd = upbit_get_usd_krw()
 
 def steam_sale():
     whole_source = ""
-    for page_number in range(0, 3):
+    for page_number in range(1, 4):
         url = 'https://store.steampowered.com/search/?specials=1&filter=topsellers&page=' + str(page_number)
         response = requests.get(url)
         whole_source = whole_source + response.text
@@ -40,14 +40,10 @@ def steam_sale():
         #     if {a['title'] : { "$eq": game_title }} == 0:
         #         db.info.remove(a['title'])
         db.info.insert_one({'platform': 'steam', 'link': game_link, 'img': game_img, 'title': game_title, 'original_price': game_original_price, 'discount_rate': game_discount_rate,'discount_price': game_discount_price})
-        # print({'platform': 'steam', 'link': game_link, 'img': game_img, 'title': game_title,
-        #  'original_price': game_original_price, 'discount_rate': game_discount_rate,
-        #  'discount_price': game_discount_price})
-# steam_sale()
-                
+
 def uplay_sale():
     headers = {'User-Agent' : 'Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36'}
-    r = requests.get('https://store.ubi.com/kr/deals?srule=Best%20sellers&sz=12&start=0', headers = headers)
+    r = requests.get('https://store.ubi.com/kr/deals?srule=Best%20sellers&sz=12&start=1', headers = headers)
     soup = BeautifulSoup(r.text, 'html.parser')
     games = soup.select('ul#search-result-items > li > div:nth-child(1)')
     for game in games:
@@ -73,7 +69,6 @@ def uplay_sale():
         #     if {a['title'] : { "$eq": game_title }} == 0:
         #         db.info.remove(a['title'])
         db.info.insert_one({'platform': 'uplay', 'link': game_link, 'img': game_img, 'title': game_title, 'original_price': game_original_price, 'discount_rate': game_discount_rate, 'discount_price': game_discount_price})
-# uplay_sale()
 
 def epic_sale():
     headers = {'User-Agent' : 'Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36'}
@@ -112,7 +107,6 @@ def epic_sale():
         #     if {a['title'] : { "$eq": game_title }} == 0:
         #         db.info.remove(a['title'])
         db.info.insert_one({'platform': 'epic', 'link': game_link, 'img': game_img, 'title': game_title, 'original_price': game_original_price, 'discount_rate': game_discount_rate, 'discount_price': game_discount_price})
-# epic_sale()
 
 def humble_sale():
     url1 = 'https://www.humblebundle.com/store/api/search?sort=bestselling&filter=onsale&request=2&page=0'
@@ -156,13 +150,12 @@ def humble_sale():
         #     if {a['title'] : { "$eq": game_title }} == 0:
         #         db.info.remove(a['title'])
         db.info.insert_one({'platform': 'humble', 'link': game_link, 'img': game_img, 'title': game_title, 'original_price': game_original_price, 'discount_rate': game_discount_rate, 'discount_price': game_discount_price, 'original_price_usd' : game_original_price_usd, 'discount_price_usd' : game_discount_price_usd})
-# humble_sale()
 
 def gog_sale():
     url1 = 'https://www.gog.com/games/ajax/filtered?mediaType=game&page=1&price=discounted&sort=popularity'
     games_1st = requests.get(url1).text
     games_1st_dic = json.loads(games_1st)
-    url2 = 'https://www.gog.com/games/ajax/filtered?mediaType=game&page=1&price=discounted&sort=popularity'
+    url2 = 'https://www.gog.com/games/ajax/filtered?mediaType=game&page=2&price=discounted&sort=popularity'
     games_2nd = requests.get(url2).text
     games_2nd_dic = json.loads(games_2nd)
     games_1st_value = games_1st_dic.setdefault('products')
@@ -194,7 +187,6 @@ def gog_sale():
         #     if {a['title'] : { "$eq": game_title }} == 0:
         #         db.info.remove(a['title'])
         db.info.insert_one({'platform': 'gog', 'link': game_link, 'img': game_img, 'title': game_title, 'original_price': game_original_price, 'discount_rate': game_discount_rate, 'discount_price': game_discount_price, 'original_price_usd' : game_original_price_usd, 'discount_price_usd' : game_discount_price_usd})
-# gog_sale()
 
 def direct_sale():
     whole_source = ""
@@ -234,9 +226,4 @@ def direct_sale():
         #     if {a['title'] : { "$eq": game_title }} == 0:
         #         db.info.remove(a['title'])
         db.info.insert_one({'platform': 'direct', 'link': game_link, 'img': game_img, 'title': game_title, 'original_price': game_original_price, 'discount_rate': game_discount_rate, 'discount_price': game_discount_price})
-# direct_sale()
 
-
-# client = MongoClient('localhost', 27017)
-# db = client.dbgame_sales_info
-# print(db.info.find({'platform'}))

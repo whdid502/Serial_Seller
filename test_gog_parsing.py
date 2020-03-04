@@ -4,7 +4,7 @@ import json
 url1 = 'https://www.gog.com/games/ajax/filtered?mediaType=game&page=1&price=discounted&sort=popularity'
 games_1st = requests.get(url1).text
 games_1st_dic = json.loads(games_1st)
-url2 = 'https://www.gog.com/games/ajax/filtered?mediaType=game&page=1&price=discounted&sort=popularity'
+url2 = 'https://www.gog.com/games/ajax/filtered?mediaType=game&page=2&price=discounted&sort=popularity'
 games_2nd = requests.get(url2).text
 games_2nd_dic = json.loads(games_2nd)
 games_1st_value = games_1st_dic.setdefault('products')

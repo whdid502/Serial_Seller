@@ -2,10 +2,10 @@ import requests
 from bs4 import BeautifulSoup
 
 whole_source = ""
-for page_number in range(0, 3):
+for page_number in range(1, 4):
     url = 'https://store.steampowered.com/search/?specials=1&filter=topsellers&page=' + str(page_number)
     response = requests.get(url)
-    whole_source = whole_source + response.text
+    whole_source += response.text
 soup = BeautifulSoup(whole_source, 'html.parser')
 games = soup.select('div#search_resultsRows > a')
 
