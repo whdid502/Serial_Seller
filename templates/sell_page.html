@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>스팀 판매</title>
+  <title>판매목록</title>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <meta name="description" content="Slide Down Box Menu with jQuery and CSS3" />
   <meta name="keywords" content="jquery, css3, sliding, box, menu, cube, navigation, portfolio, thumbnails"/>
@@ -32,22 +32,17 @@
   var params = get_query_string_object();
   var platform = params.platform;
   var page = params.page;
-  if(platform == 'GOG.com'){
-    platform = 'gog'
-  }else if (platform == 'epicgames'){
-    platform = 'epic'
-  }else if (platform == 'humblebundle'){
-    platform = 'humble'
-  }else if (platform == 'directgames'){
-    platform = 'direct'
-  }else{
-    platform = platform
-  }
+  var sort = params.sort;
+  var order = params.order;
+
   console.log(platform);
+  console.log(page);
+  console.log(sort);
+  console.log(order);
   $(document).ready(
     $.ajax({
       type: "GET",
-      url: "/all_games_info?platform=" + platform + "&sort=discount_rate&order=asc&page=" + page,
+      url: "/all_games_info?platform=" + platform + "&sort=" + sort + "&order=" + order + "&page=" + page,
       data: {},
       success: function(response){
         console.log('good');
