@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>판매목록</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="description" content="Slide Down Box Menu with jQuery and CSS3" />
+    <meta name="keywords" content="jquery, css3, sliding, box, menu, cube, navigation, portfolio, thumbnails"/>
+    <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='../static/game_sale_style/basic_style.css') }}">
+    <link href="https://fonts.googleapis.com/css?family=Stylish&display=swap" rel="stylesheet"><!--구글폰트-->
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/paginationjs/2.1.4/pagination.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/paginationjs/2.1.4/pagination.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script><!--ajax요청-->
+<script>
+function get_query_string_object() {
+  var a = window.location.search.substr(1).split('&');
+  if (a == "") return {};
+  var b = {};
+  for (var i = 0; i < a.length; ++i) {
+    var p = a[i].split('=', 2);
+    if (p.length == 1)
+    b[p[0]] = "";
+    else
+    b[p[0]] = decodeURIComponent(p[1].replace(/\+/g, " "));
+  }
+  return b;
+}
+var params = get_query_string_object();
+var platform = params.platform;
+var page = params.page;
+var sort = params.sort;
+var order = params.order;
+$(function () {
+    let container = $('#pagination');
+    container.pagination({
+        dataSource: "/all_games_info?platform=" + platform + "&sort=" + sort + "&order=" + order + "&page=0",
+        callback: function (data, pagination) {
+            var dataHtml = '<ul>';
+
+            $.each(data, function (index, item) {
+                dataHtml += '<li>' + item.name + '</li>';
+            });
+
+            dataHtml += '</ul>';
+
+            $("#data-container").html(dataHtml);
+        }
+    })
+})
+</script>
+</head>
+<body>
+  <div>
+      <section>
+          <div id="data-container"></div>
+          <div id="pagination"></div>
+      </section>
+  </div>
+
+
+</body>
+</html>

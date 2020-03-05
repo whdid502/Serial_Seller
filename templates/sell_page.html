@@ -34,7 +34,6 @@
   var page = params.page;
   var sort = params.sort;
   var order = params.order;
-
   $(document).ready(
     $.ajax({
       type: "GET",
@@ -55,87 +54,78 @@
         }
       }
     })
-
   )
-  // function change_page_number(){
-  //
-  // }
-  $('.dropdown-menu').ready(function(){
-  if (platform == 'steam'){
-    $('.change_steam').addClass('disabled')
-  } else if(platform == 'uplay'){
-    $('.change_uplay').addClass('disabled')
-  }else if(platform == 'epic'){
-    $('.change_epic').addClass('disabled')
-  }else if(platform == 'gog'){
-    $('.change_gog').addClass('disabled')
-  }else if(platform == 'humble'){
-    $('.change_humble').addClass('disabled')
-  }else if(platform == 'direct'){
-    $('.change_direct').addClass('disabled')
-  };
-})
-// function change_url(){
-//   var parameter = location.href.split('?')
-//   var parameter_paltfrom
-// }
-var tmp_href = location.href.split("?");
-var front_url = tmp_href[0];
-var tmp_param = tmp_href[1].split("&");
-var param_platform = tmp_param[0];
-var param_sort = tmp_param[1];
-var param_order = tmp_param[2];
-var param_page = tmp_param[3];
-console.log(front_url);
-console.log(param_platform);
-console.log(param_sort);
-console.log(param_order);
-console.log(param_page);
-function low_price(){
-  location.replace(front_url + '?' + param_platform + '&sort=discount_price' + '&order=asc' + '&' + param_page)
-}
-function high_price() {
-  location.replace(front_url + '?' + param_platform + '&sort=discount_price' + '&order=dsc' + '&' + param_page)
-}
-function high_rate() {
-  location.replace(front_url + '?' + param_platform + '&sort=discount_rate' + '&order=dsc' + '&' + param_page)
-}
-function low_rate(){
-  location.replace(front_url + '?' + param_platform + '&sort=discount_rate' + '&order=asc' + '&' + param_page)
-}
-// $('.change_low_price').onclick(
-//   location.replace(FrontUrl)
-// )
+  $('.platform_down').ready(function(){
+    if (platform == 'steam'){
+      $('.steam_item').addClass('disabled')
+    } else if(platform == 'uplay'){
+      $('.uplay_item').addClass('disabled')
+    }else if(platform == 'epic'){
+      $('.epic_item').addClass('disabled')
+    }else if(platform == 'gog'){
+      $('.gog_item').addClass('disabled')
+    }else if(platform == 'humble'){
+      $('.humble_item').addClass('disabled')
+    }else if(platform == 'direct'){
+      $('.direct_item').addClass('disabled')
+    };
+    $('.filter_menu').ready(function(){
+      if(sort == 'discount_price' && order == 'asc'){
+        $('.low_price_item').addClass('disabled')
+      }else if (sort == 'discount_price' && order == 'dsc') {
+        $('.high_price_item').addClass('disabled')
+      }else if (sort == 'discount_rate' && order == 'asc') {
+        $('.low_rate_item').addClass('disabled')
+      }else if (sort == 'discount_rate' && order == 'dsc') {
+        $('.high_rate_item').addClass('disabled')
+      }
+    })
+  })
+  var tmp_href = location.href.split("?");
+  var front_url = tmp_href[0];
+  var tmp_param = tmp_href[1].split("&");
+  var param_platform = tmp_param[0];
+  var param_sort = tmp_param[1];
+  var param_order = tmp_param[2];
+  var param_page = tmp_param[3];
+  function change_platform(changed_platform){
+    location.replace(front_url + '?platform=' + changed_platform + '&sort=discount_rate&order=dsc&page=1')
+  }
+  function change_filter(changed_sort,changed_order){
+    location.replace(front_url + '?' + param_platform + '&sort=' + changed_sort + '&order=' + changed_order + '&page=1')
+  }
+  function change_page(changed_page) {
+    location.replace(front_url + '?' + param_platform + '&' + param_sort + '&' + param_order + '&page=' + changed_page)
+  }
   </script>
 </head>
 <body>
   <a href="/serial_seller"><h1 class="title_style">연쇄 할인마(게임할인정보모음)</h1></a>
   <h2>판매목록</h2>
   <div class="dropdown">
-  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    다른 플랫폼 둘러보기
-  </button>
-  <div class="dropdown-menu change_platform" aria-labelledby="dropdownMenuButton">
-    <a class="dropdown-item change_steam" href="/sell_page?platform=steam&sort=discount_rate&order=dsc&page=1">스팀</a>
-    <a class="dropdown-item change_uplay" href="/sell_page?platform=uplay&sort=discount_rate&order=dsc&page=1">유플레이</a>
-    <a class="dropdown-item change_epic" href="/sell_page?platform=epic&sort=discount_rate&order=dsc&page=1">에픽스토어</a>
-    <a class="dropdown-item change_gog" href="/sell_page?platform=gog&sort=discount_rate&order=dsc&page=1">GOG.com</a>
-    <a class="dropdown-item change_humble" href="/sell_page?platform=humble&sort=discount_rate&order=dsc&page=1">험블번들</a>
-    <a class="dropdown-item change_direct" href="/sell_page?platform=direct&sort=discount_rate&order=dsc&page=1">다이렉트게임즈</a>
+    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      다른 플랫폼 둘러보기
+    </button>
+    <div class="dropdown-menu platform_menu" aria-labelledby="dropdownMenuButton">
+      <a class="dropdown-item steam_item" href="#" onclick="change_platform('steam')">스팀</a>
+      <a class="dropdown-item uplay_item" href="#" onclick="change_platform('uplay')">유플레이</a>
+      <a class="dropdown-item epic_item" href="#" onclick="change_platform('epic')">에픽스토어</a>
+      <a class="dropdown-item gog_item" href="#" onclick="change_platform('gog')">GOG.com</a>
+      <a class="dropdown-item humble_item" href="#" onclick="change_platform('humble')">험블번들</a>
+      <a class="dropdown-item direct_item" href="#" onclick="change_platform('direct')">다이렉트게임즈</a>
+    </div>
   </div>
-</div>
-<div class="dropdown">
-<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-  필터링 변경
-</button>
-<div class="dropdown-menu change_filter" aria-labelledby="dropdownMenuButton">
-  <!-- <button type="button" name="button" onclick="change_filter()">최저가 순서</button> -->
-  <a class="dropdown-item change_low_price" href="#" onclick="low_price()">최저가 순서</a>
-  <a class="dropdown-item change_high_price" href="#" onclick="high_price()">최고가 순서</a>
-  <a class="dropdown-item change_high_rate" href="#" onclick="low_rate()">최저할인율 순서</a>
-  <a class="dropdown-item change_low_rate" href="#" onclick="high_rate()">최고할인율 순서</a>
-</div>
-</div>
+  <div class="dropdown">
+    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      필터링 변경
+    </button>
+    <div class="dropdown-menu filter_menu" aria-labelledby="dropdownMenuButton">
+      <a class="dropdown-item low_price_item" href="#" onclick="change_filter('discount_price','asc')">최저가 순서</a>
+      <a class="dropdown-item high_price_item" href="#" onclick="change_filter('discount_price','dsc')">최고가 순서</a>
+      <a class="dropdown-item low_rate_item" href="#" onclick="change_filter('discount_rate','asc')">최저할인율 순서</a>
+      <a class="dropdown-item high_rate_item" href="#" onclick="change_filter('discount_rate','dsc')">최고할인율 순서</a>
+    </div>
+  </div>
   <table id="all_games_table">
     <thead>
       <tr>
@@ -154,14 +144,12 @@ function low_rate(){
   </ul>
   <nav aria-label="Page navigation example">
     <ul class="pagination">
-						<li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
-						<li class="page-item active"><a class="page-link" href="/sell_page?platform=steam&sort=discount_rate&order=dsc&page=1">1</a></li>
-						<li class="page-item"><a class="page-link" href="/sell_page?platform=steam&sort=discount_rate&order=dsc&page=2">2</a></li>
-						<li class="page-item"><a class="page-link" href="/sell_page?platform=steam&sort=discount_rate&order=dsc&page=3">3</a></li>
-						<li class="page-item"><a class="page-link" href="/sell_page?platform=steam&sort=discount_rate&order=dsc&page=4">4</a></li>
-						<li class="page-item"><a class="page-link" href="/sell_page?platform=steam&sort=discount_rate&order=dsc&page=5">5</a></li>
-						<li class="page-item"><a class="page-link" href="#">Next</a></li>
-					</ul>
+      <li class="page-item"><a class="page-link" href="#" onclick="change_page('1')">1</a></li>
+      <li class="page-item"><a class="page-link" href="#" onclick="change_page('2')">2</a></li>
+      <li class="page-item"><a class="page-link" href="#" onclick="change_page('3')">3</a></li>
+      <li class="page-item"><a class="page-link" href="#" onclick="change_page('4')">4</a></li>
+      <li class="page-item"><a class="page-link" href="#" onclick="change_page('5')">5</a></li>
+    </ul>
   </nav>
   <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>

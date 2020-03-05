@@ -41,7 +41,7 @@ def get_steam_sale():
 
   sort_page = int(sort_page)
   if sort_page in range(1,100):
-      result_db = intermediate_db.skip((sort_page-1)*8).limit(8)
+      result_db = intermediate_db.skip((sort_page-1)*16).limit(16)
   else:
       result_db = intermediate_db
 
@@ -81,39 +81,13 @@ def get_steam_sale():
 def game_sell_page():
    return render_template('sell_page.html')
 
-@app.route('/epic_page')
-def game_epic_page():
-   return render_template('epic_page.html')
-
-@app.route('/uplay_page')
-def game_uplay_page():
-   return render_template('uplay_page.html')
-
-@app.route('/humble_page')
-def game_humble_page():
-   return render_template('humble_page.html')
-
-@app.route('/gog_page')
-def game_gog_page():
-   return render_template('gog_page.html')
-
-@app.route('/directgames_page')
-def game_directgames_page():
-   return render_template('directgames_page.html')
-
-@app.route('/discount_rate_page')
-def game_discount_rate_page():
-   return render_template('discount_rate_page.html')
-
-@app.route('/discount_price_page')
-def game_discount_price_page():
-   return render_template('discount_price_page.html')
+@app.route('/sell_page2')
+def game_sell_page2():
+   return render_template('sell_page2.html')
 
 @app.route('/mywish_page')
 def game_mywish_page():
    return render_template('mywish_page.html')
-
-
 
 @app.route('/uplay_info', methods=['GET'])
 def get_uplay_sale():
