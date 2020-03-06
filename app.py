@@ -47,10 +47,10 @@ def get_steam_sale():
 
   output=[]
 
-  for s in result_db:
-      output.append(
-          {'platform': s['platform'], 'link': s['link'], 'img': s['img'], 'title': s['title'], 'original_price': s['original_price'],
-           'discount_rate': s['discount_rate'], 'discount_price': s['discount_price']})
+  for s in result_db({"original_price_usd":{"$exists":True}}):
+          output.append({'platform': s['platform'], 'link': s['link'], 'img': s['img'], 'title': s['title'], 'original_price': s['original_price'], 'discount_rate': s['discount_rate'], 'discount_price': s['discount_price'], 'original_price_usd': s['original_price_usd'], 'discount_price_usd': s['discount_price_usd']})
+  for s in result_db({"original_price_usd":{"$exists":False}}):
+          output.append({'platform': s['platform'], 'link': s['link'], 'img': s['img'], 'title': s['title'], 'original_price': s['original_price'],'discount_rate': s['discount_rate'], 'discount_price': s['discount_price']})
   return jsonify({'result': output})
   #
   # platform_params = request.args.get('platform', platform)
