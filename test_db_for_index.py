@@ -34,8 +34,12 @@ def all_games():
                 game_original_price = game.select_one('div > div > div.search_price').text.replace('₩', '',1).strip().replace(',','')
                 game_link = game['href']
                 game_img = game.select_one('div > img').get('src')
+        client = MongoClient('localhost', 27017)
+        db = client.dball_games_not_sale
+        db.info.insert_one({'platform': 'steam', 'link': game_link, 'img': game_img, 'title': game_title,
+                            'original_price': game_original_price, 'status' : 'not discount'})
 
         # return game_title, game_img, game_link, game_original_price
-    whole_info.append(game_link, game_img, game_title, game_original_price)
-    return whole_info
-all_games()
+#     whole_info.append({{'link' :game_link}, {'img' : game_img}, {'title' : game_title}, {'original_price' : game_original_price}})
+#     client
+# all_games()
