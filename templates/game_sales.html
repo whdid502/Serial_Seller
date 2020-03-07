@@ -62,7 +62,28 @@
         .animate({'top':'25px'},500);
       });
     });
-
+function index_game() {
+  var game_title_collection = [];
+  $.ajax({
+    type:"GET",
+    url: "/all_games_info?platform=all&sort=&order=&page=0",
+    data: {},
+    async: false,
+    success : function(response){
+      var game_data_onsale = response['result'];
+      for(i=0; i < game_data_onsale.length; i++){
+        var game_title = game_data_onsale[i]['title'];
+        game_title_collection.push(game_title)
+      }
+    }
+  });
+  var index_content = $('.index_bar_size').text()
+  if (game_title_collection.index(index_content) >= 0){
+    console.log('onsale');
+  }else {
+    console.log('notsale');
+  }
+}
 
 
     </script>
@@ -73,7 +94,7 @@
       <div class="input-group mb-3">
         <input type="text" class="index_bar_size" placeholder="게임을 검색하세요" aria-label="Recipient's username" aria-describedby="button-addon2">
         <div class="input-group-append">
-          <button class="btn btn-outline-secondary index7e7. index_button_size" type="button" id="button-addon2">검색</button>
+          <button class="btn btn-outline-secondary index7e7. index_button_size" type="button" id="button-addon2" onclick="index_game()">검색</button>
         </div>
       </div>
     </div>
@@ -143,6 +164,9 @@
       </ul>
     </div>
     <div>
+    </div>
+    <div id="index_result">
+
     </div>
 
 
