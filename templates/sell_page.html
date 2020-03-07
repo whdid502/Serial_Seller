@@ -41,17 +41,32 @@
       data: {},
       success: function(response){
         console.log('good');
-        var game_data = response['result']
+        var game_data = response['result'];
         for(var i = 0; i < game_data.length; i++){
-          var game_platform = game_data[i]['platform']
-          var game_title = game_data[i]['title']
-          var game_img = game_data[i]['img']
-          var game_link = game_data[i]['link']
-          var game_original_price = game_data[i]['original_price']
-          var game_discount_rate = game_data[i]['discount_rate']
-          var game_discount_price = game_data[i]['discount_price']
-          $('#game_td').append("<tr><a href=" + game_link + "><td>" + game_platform + "</td><td>" + game_title + "</td><td>" + game_original_price + "</td><td>" + game_discount_rate + "</td><td>" + game_discount_price + "</td></a></tr>")
+          var game_platform = game_data[i]['platform'];
+          var game_title = game_data[i]['title'];
+          var game_img = game_data[i]['img'];
+          var game_link = game_data[i]['link'];
+          var game_original_price = game_data[i]['original_price'];
+          var game_discount_rate = game_data[i]['discount_rate'];
+          var game_discount_price = game_data[i]['discount_price'];
+          $('#game_td').append("<tr><a href=" + game_link + "><td>" + game_platform + "</td><td>" + game_title + "</td><td>" + game_original_price + "</td><td>" + game_discount_rate + "</td><td>" + game_discount_price + "</td></a></tr>");
         }
+        $.ajax({
+          type:"GET",
+          url: "/all_games_info?platform=" + platform + "&sort=" + sort + "&order=" + order + "&page=0",
+          data: {},
+          success : function(response){
+            console.log('page_ajax_good');
+            var max_game_data = response['result'].length;
+            var max_page = Math.ceil(max_game_data/16)
+            // $('.pagination').append("<li class=" + "\'page_item\'" + "><a class =" + "\'page-link\'" + "onclick=" + "\'change_page(" + page-1 +")\'" + ">이전</a></li>");
+            for (i=1; i < max_page+1; i++){
+              $('.pagination').append("<li class=" + "\'page_item\'" + "><a class =" + "\'page-link\'" + "onclick=" + "\'change_page(" + i +")\'" + ">" + i + "</a></li>")
+            }
+            // $('.pagination').append("<li class=" + "\'page_item\'" + "><a class =" + "\'page-link\'" + "onclick=" + "\'change_page(" + page+1 +")\'" + ">다음</a></li>")
+          }
+        })
       }
     })
   )
@@ -97,6 +112,8 @@
   function change_page(changed_page) {
     location.replace(front_url + '?' + param_platform + '&' + param_sort + '&' + param_order + '&page=' + changed_page)
   }
+
+
   </script>
 </head>
 <body>
@@ -144,11 +161,11 @@
   </ul>
   <nav aria-label="Page navigation example">
     <ul class="pagination">
-      <li class="page-item"><a class="page-link" href="#" onclick="change_page('1')">1</a></li>
+      <!-- <li class="page-item"><a class="page-link" href="#" onclick="change_page('1')">1</a></li>
       <li class="page-item"><a class="page-link" href="#" onclick="change_page('2')">2</a></li>
       <li class="page-item"><a class="page-link" href="#" onclick="change_page('3')">3</a></li>
       <li class="page-item"><a class="page-link" href="#" onclick="change_page('4')">4</a></li>
-      <li class="page-item"><a class="page-link" href="#" onclick="change_page('5')">5</a></li>
+      <li class="page-item"><a class="page-link" href="#" onclick="change_page('5')">5</a></li> -->
     </ul>
   </nav>
   <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
