@@ -42,4 +42,4 @@ def all_games():
         # return game_title, game_img, game_link, game_original_price
 #     whole_info.append({{'link' :game_link}, {'img' : game_img}, {'title' : game_title}, {'original_price' : game_original_price}})
 #     client
-# all_games()
+all_games()
