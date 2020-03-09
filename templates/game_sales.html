@@ -62,28 +62,31 @@
         .animate({'top':'25px'},500);
       });
     });
-function index_game() {
-  var game_title_collection = [];
-  $.ajax({
-    type:"GET",
-    url: "/all_games_info?platform=all&sort=&order=&page=0",
-    data: {},
-    async: false,
-    success : function(response){
-      var game_data_onsale = response['result'];
-      for(i=0; i < game_data_onsale.length; i++){
-        var game_title = game_data_onsale[i]['title'];
-        game_title_collection.push(game_title)
-      }
+    function index_game() {
+      var game_title_collection = [];
+      $.ajax({
+        type:"GET",
+        url: "/all_games_info?platform=all&sort=&order=&page=0",
+        data: {},
+        success : function(response){
+          var indexed_game = $('.index_bar_size').val();
+          var game_data_onsale = response['result'];
+          for(i=0; i < game_data_onsale.length; i++){
+            var game_platform = game_data_onsale[i]['platform'];
+            var game_title = game_data_onsale[i]['title'];
+            var game_img = game_data_onsale[i]['img'];
+            var game_link = game_data_onsale[i]['link'];
+            var game_original_price = game_data_onsale[i]['original_price'];
+            var game_discount_rate = game_data_onsale[i]['discount_rate'];
+            var game_discount_price = game_data_onsale[i]['discount_price'];
+            if (indexed_game == game_title){
+              $('#game_td').empty();
+              $('#index_result').append("<tr><a href=" + game_link + "><td>" + game_platform + "</td><td>" + game_title + "</td><td>" + game_original_price + "</td><td>" +game_discount_rate + "</td><td>" + game_discount_price + "</td></a></tr>")
+            }
+          }
+        }
+      });
     }
-  });
-  var index_content = $('.index_bar_size').text()
-  if (game_title_collection.index(index_content) >= 0){
-    console.log('onsale');
-  }else {
-    console.log('notsale');
-  }
-}
 
 
     </script>
@@ -165,9 +168,19 @@ function index_game() {
     </div>
     <div>
     </div>
-    <div id="index_result">
-
-    </div>
+    <table id="index_result">
+      <thead>
+        <tr>
+          <td>플랫폼</td>
+          <td>게임</td>
+          <td>원가</td>
+          <td>할인율</td>
+          <td>할인가</td>
+        </tr>
+      </thead>
+      <tbody id="game_td">
+      </tbody>
+    </table>
 
 
   </body>

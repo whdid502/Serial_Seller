@@ -40,3 +40,6 @@ ul.sdt_menu{
   /* visibility: hidden; */
   display: none;
 }
+#index_result{
+  color: white;
+}

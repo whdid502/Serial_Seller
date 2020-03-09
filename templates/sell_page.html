@@ -70,39 +70,20 @@
             }
             console.log(max_page);
             console.log(page);
-            // $('.pagination').append("<li class=" + "\'page_item\'" + "><a class =" + "\'page-link\'" + "onclick=" + "\'change_page(" + page+1 +")\'" + ">다음</a></li>")
             for(var n = 1; n < max_page+1; n++){
               if(page == n){
                 $(".page_no" + n).removeClass('page_unvisible');
-                // $('.page_item a:contains(' + i + ')').addClass('disabled');
                 $(".page_no" + n).next().removeClass('page_unvisible');
                 $(".page_no" + n).next().next().removeClass('page_unvisible');
                 $(".page_no" + n).prev().removeClass('page_unvisible');
                 $(".page_no" + n).prev().prev().removeClass('page_unvisible');
-
-                // $('.page_item a:contains(' + i + 2 + ')').parent('li').removeClass('page_unvisible');
               }
-              // else if (page == i && i > max_page-3) {
-                // $('.page_item a:contains(' + i - 2 + ')').parent('li').removeClass('page_unvisible');
-                // $('.page_item a:contains(' + i - 1 + ')').parent('li').removeClass('page_unvisible');
-                // $('.page_item a:contains(' + i + ')').parent('li').removeClass('page_unvisible');
-                // $('.page_item a:contains(' + i + ')').addClass('disabled');
-              // }
-              // else {
-                // $('.page_item a:contains(' + i - 2 + ')').parent('li').removeClass('page_unvisible');
-                // $('.page_item a:contains(' + i - 1 + ')').parent('li').removeClass('page_unvisible');
-                // $('.page_item a:contains(' + i + ')').parent('li').removeClass('page_unvisible');
-                // $('.page_item a:contains(' + i + ')').addClass('disabled');
-                // $('.page_item a:contains(' + i + 1 + ')').parent('li').removeClass('page_unvisible');
-                // $('.page_item a:contains(' + i + 2 + ')').parent('li').removeClass('page_unvisible');
-              // }
-            // }
+            }
           }
-          }
-          })
-        }
-      })
-    )
+        })
+      }
+    })
+  )
 
   $('.platform_down').ready(function(){
     if (platform == 'steam'){
@@ -192,7 +173,6 @@
     </tbody>
   </table>
   <ul id="card_container">
-
   </ul>
   <nav aria-label="Page navigation example">
     <ul class="pagination">
