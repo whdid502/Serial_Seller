@@ -36,3 +36,7 @@ ul.sdt_menu{
 #all_games_table{
   color: white;
 }
+.page_unvisible{
+  /* visibility: hidden; */
+  display: none;
+}

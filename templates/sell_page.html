@@ -60,16 +60,50 @@
             console.log('page_ajax_good');
             var max_game_data = response['result'].length;
             var max_page = Math.ceil(max_game_data/16)
-            // $('.pagination').append("<li class=" + "\'page_item\'" + "><a class =" + "\'page-link\'" + "onclick=" + "\'change_page(" + page-1 +")\'" + ">이전</a></li>");
-            for (i=1; i < max_page+1; i++){
-              $('.pagination').append("<li class=" + "\'page_item\'" + "><a class =" + "\'page-link\'" + "onclick=" + "\'change_page(" + i +")\'" + ">" + i + "</a></li>")
+            $('.pagination').append("<li class=" + "\'page_item page_no1\'" + "><a class =" + "\'page-link\'" + "onclick=" + "\'change_page(" + 1 + ")\'" + ">1</a></li>");
+            for (i=2; i < max_page; i++){
+              $('.pagination').append("<li class=" + "\'page_item page_unvisible page_no" + i + "\'" + "><a class =" + "\'page-link\'" + "onclick=" + "\'change_page(" + i +")\'" + ">" + i + "</a></li>")
             }
+            $('.pagination').append("<li class=" + "\'page_item page_no" + max_page + "\'" + "><a class =" + "\'page-link\'" + "onclick=" + "\'change_page(" + max_page + ")\'" + ">" + max_page + "</a></li>");
+            if (max_page == 1){
+              $('.pagination li:nth-child(2)').remove();
+            }
+            console.log(max_page);
+            console.log(page);
             // $('.pagination').append("<li class=" + "\'page_item\'" + "><a class =" + "\'page-link\'" + "onclick=" + "\'change_page(" + page+1 +")\'" + ">다음</a></li>")
+            for(var n = 1; n < max_page+1; n++){
+              if(page == n){
+                $(".page_no" + n).removeClass('page_unvisible');
+                // $('.page_item a:contains(' + i + ')').addClass('disabled');
+                $(".page_no" + n).next().removeClass('page_unvisible');
+                $(".page_no" + n).next().next().removeClass('page_unvisible');
+                $(".page_no" + n).prev().removeClass('page_unvisible');
+                $(".page_no" + n).prev().prev().removeClass('page_unvisible');
+
+                // $('.page_item a:contains(' + i + 2 + ')').parent('li').removeClass('page_unvisible');
+              }
+              // else if (page == i && i > max_page-3) {
+                // $('.page_item a:contains(' + i - 2 + ')').parent('li').removeClass('page_unvisible');
+                // $('.page_item a:contains(' + i - 1 + ')').parent('li').removeClass('page_unvisible');
+                // $('.page_item a:contains(' + i + ')').parent('li').removeClass('page_unvisible');
+                // $('.page_item a:contains(' + i + ')').addClass('disabled');
+              // }
+              // else {
+                // $('.page_item a:contains(' + i - 2 + ')').parent('li').removeClass('page_unvisible');
+                // $('.page_item a:contains(' + i - 1 + ')').parent('li').removeClass('page_unvisible');
+                // $('.page_item a:contains(' + i + ')').parent('li').removeClass('page_unvisible');
+                // $('.page_item a:contains(' + i + ')').addClass('disabled');
+                // $('.page_item a:contains(' + i + 1 + ')').parent('li').removeClass('page_unvisible');
+                // $('.page_item a:contains(' + i + 2 + ')').parent('li').removeClass('page_unvisible');
+              // }
+            // }
           }
-        })
-      }
-    })
-  )
+          }
+          })
+        }
+      })
+    )
+
   $('.platform_down').ready(function(){
     if (platform == 'steam'){
       $('.steam_item').addClass('disabled')
@@ -105,13 +139,14 @@
   var param_page = tmp_param[3];
   function change_platform(changed_platform){
     location.replace(front_url + '?platform=' + changed_platform + '&sort=discount_rate&order=dsc&page=1')
-  }
+  };
   function change_filter(changed_sort,changed_order){
     location.replace(front_url + '?' + param_platform + '&sort=' + changed_sort + '&order=' + changed_order + '&page=1')
-  }
+  };
   function change_page(changed_page) {
     location.replace(front_url + '?' + param_platform + '&' + param_sort + '&' + param_order + '&page=' + changed_page)
-  }
+  };
+
 
 
   </script>
@@ -161,11 +196,6 @@
   </ul>
   <nav aria-label="Page navigation example">
     <ul class="pagination">
-      <!-- <li class="page-item"><a class="page-link" href="#" onclick="change_page('1')">1</a></li>
-      <li class="page-item"><a class="page-link" href="#" onclick="change_page('2')">2</a></li>
-      <li class="page-item"><a class="page-link" href="#" onclick="change_page('3')">3</a></li>
-      <li class="page-item"><a class="page-link" href="#" onclick="change_page('4')">4</a></li>
-      <li class="page-item"><a class="page-link" href="#" onclick="change_page('5')">5</a></li> -->
     </ul>
   </nav>
   <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
