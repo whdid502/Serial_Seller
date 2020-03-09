@@ -22,7 +22,9 @@ def steam_sale():
         game_link = game['href']
         game_img = game.select_one('div > img').get('src')
         game_title = game.select_one('div > div > span.title').text
-        game_original_price = game.select_one('div > div > div > span > strike').text.replace('₩', '',1).strip().replace(',','')
+        game_original_price = game.select_one('div > div > div > span > strike').text.replace('₩', '',
+                                                                                              1).strip().replace(
+            ',', '')
         game_discount_rate = game.select_one('div > div > div > span').text.translate({ord('-'): '', ord('%'): ''})
         combined_div = game.select_one('div > div > div.search_price')
         unwanted_div = game.select_one('div > div > div.search_price > span')
@@ -32,6 +34,15 @@ def steam_sale():
         game_original_price = int(game_original_price)
         game_discount_rate = int(game_discount_rate)
         game_discount_price = int(game_discount_price)
+
+        def upbit_get_usd_krw():
+            url = 'https://quotation-api-cdn.dunamu.com/v1/forex/recent?codes=FRX.KRWUSD'
+            exchange = requests.get(url).json()
+            return exchange[0]['basePrice']
+
+        krw = upbit_get_usd_krw()
+        game_original_price_usd = round(game_original_price / krw, 2)
+        game_discount_price_usd = round(game_discount_price / krw, 2)
         client = MongoClient('localhost', 27017)
         db = client.dball_games
         # db.info.update_many({'title': game_title}, {'platform': 'steam', 'link': game_link, 'img': game_img, 'title': game_title, 'original_price': game_original_price, 'discount_rate': game_discount_rate, 'discount_price': game_discount_price}, upsert=True)
@@ -39,7 +50,7 @@ def steam_sale():
         # for a in db.info.find():
         #     if {a['title'] : { "$eq": game_title }} == 0:
         #         db.info.remove(a['title'])
-        db.info.insert_one({'platform': 'steam', 'link': game_link, 'img': game_img, 'title': game_title, 'original_price': game_original_price, 'discount_rate': game_discount_rate,'discount_price': game_discount_price})
+        db.info.insert_one({'platform': 'steam', 'link': game_link, 'img': game_img, 'title': game_title, 'original_price': game_original_price, 'discount_rate': game_discount_rate,'discount_price': game_discount_price, 'original_price_usd': game_original_price_usd, 'discount_price_usd': game_discount_price_usd})
 
 def uplay_sale():
     headers = {'User-Agent' : 'Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36'}
@@ -49,18 +60,34 @@ def uplay_sale():
     for game in games:
         game_link = 'https://store.ubi.com' + game.select_one('a.thumb-link')['href']
         game_img = game.select_one('div.product-image > img')['data-desktop-src']
-        game_title = game.select_one('div > div > div > h2.prod-title').get_text(" ",strip=True) + ' ' + game.select_one('div > div > div > h3').text
+        game_title = game.select_one('div > div > div > h2.prod-title').get_text(" ",
+                                                                                 strip=True) + ' ' + game.select_one(
+            'div > div > div > h3').text
         if game.select_one('div > div > div > div > div > div.deal-percentage') != None:
-            game_original_price = game.select_one('div > div > div > div > div > span > span.price-item').text.translate({ord('₩'): '', ord(','): ''}).strip()
-            game_discount_rate = game.select_one('div > div > div > div > div > div.deal-percentage').text.translate({ord('-'): '', ord('%'): ''}).strip()
-            game_discount_price = game.select_one('div > div > div > div > div > span.price-sales').text.translate({ord('₩'): '', ord(','): ''}).strip()
+            game_original_price = game.select_one(
+                'div > div > div > div > div > span > span.price-item').text.translate(
+                {ord('₩'): '', ord(','): ''}).strip()
+            game_discount_rate = game.select_one('div > div > div > div > div > div.deal-percentage').text.translate(
+                {ord('-'): '', ord('%'): ''}).strip()
+            game_discount_price = game.select_one('div > div > div > div > div > span.price-sales').text.translate(
+                {ord('₩'): '', ord(','): ''}).strip()
         else:
-            game_original_price = game.select_one('div > div > div > div > div > span.price-sales').text.translate({ord('₩'): '', ord(','): ''}).strip()
+            game_original_price = game.select_one('div > div > div > div > div > span.price-sales').text.translate(
+                {ord('₩'): '', ord(','): ''}).strip()
             game_discount_rate = 0
             game_discount_price = game_original_price
+
+        def upbit_get_usd_krw():
+            url = 'https://quotation-api-cdn.dunamu.com/v1/forex/recent?codes=FRX.KRWUSD'
+            exchange = requests.get(url).json()
+            return exchange[0]['basePrice']
+
+        krw = upbit_get_usd_krw()
         game_original_price = int(game_original_price)
         game_discount_rate = int(game_discount_rate)
         game_discount_price = int(game_discount_price)
+        game_original_price_usd = round(game_original_price / krw, 2)
+        game_discount_price_usd = round(game_discount_price / krw, 2)
         client = MongoClient('localhost', 27017)
         db = client.dball_games
         # db.info.update_many({'title': game_title}, {'platform': 'uplay', 'link': game_link, 'img': game_img, 'title': game_title, 'original_price': game_original_price, 'discount_rate': game_discount_rate, 'discount_price': game_discount_price}, upsert=True)
@@ -68,7 +95,7 @@ def uplay_sale():
         # for a in db.info.find():
         #     if {a['title'] : { "$eq": game_title }} == 0:
         #         db.info.remove(a['title'])
-        db.info.insert_one({'platform': 'uplay', 'link': game_link, 'img': game_img, 'title': game_title, 'original_price': game_original_price, 'discount_rate': game_discount_rate, 'discount_price': game_discount_price})
+        db.info.insert_one({'platform': 'uplay', 'link': game_link, 'img': game_img, 'title': game_title, 'original_price': game_original_price, 'discount_rate': game_discount_rate, 'discount_price': game_discount_price, 'original_price_usd': game_original_price_usd, 'discount_price_usd': game_discount_price_usd})
 
 def epic_sale():
     headers = {'User-Agent' : 'Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36'}
@@ -99,6 +126,15 @@ def epic_sale():
         game_discount_price = int(game_discount_price)
         game_discount_rate = int(game_discount_rate)
         game_original_price = int(game_original_price)
+
+        def upbit_get_usd_krw():
+            url = 'https://quotation-api-cdn.dunamu.com/v1/forex/recent?codes=FRX.KRWUSD'
+            exchange = requests.get(url).json()
+            return exchange[0]['basePrice']
+
+        krw = upbit_get_usd_krw()
+        game_original_price_usd = round(game_original_price / krw, 2)
+        game_discount_price_usd = round(game_discount_price / krw, 2)
         client = MongoClient('localhost', 27017)
         db = client.dball_games
         # db.info.update_many({'title': game_title}, {'platform': 'epic', 'link': game_link, 'img': game_img, 'title': game_title, 'original_price': game_original_price, 'discount_rate': game_discount_rate, 'discount_price': game_discount_price}, upsert=True)
@@ -106,7 +142,7 @@ def epic_sale():
         # for a in db.info.find():
         #     if {a['title'] : { "$eq": game_title }} == 0:
         #         db.info.remove(a['title'])
-        db.info.insert_one({'platform': 'epic', 'link': game_link, 'img': game_img, 'title': game_title, 'original_price': game_original_price, 'discount_rate': game_discount_rate, 'discount_price': game_discount_price})
+        db.info.insert_one({'platform': 'epic', 'link': game_link, 'img': game_img, 'title': game_title, 'original_price': game_original_price, 'discount_rate': game_discount_rate, 'discount_price': game_discount_price, 'original_price_usd': game_original_price_usd, 'discount_price_usd': game_discount_price_usd})
 
 def humble_sale():
     url1 = 'https://www.humblebundle.com/store/api/search?sort=bestselling&filter=onsale&request=2&page=0'
@@ -149,7 +185,7 @@ def humble_sale():
         # for a in db.info.find():
         #     if {a['title'] : { "$eq": game_title }} == 0:
         #         db.info.remove(a['title'])
-        db.info.insert_one({'platform': 'humble', 'link': game_link, 'img': game_img, 'title': game_title, 'original_price': game_original_price, 'discount_rate': game_discount_rate, 'discount_price': game_discount_price, 'original_price_usd' : game_original_price_usd, 'discount_price_usd' : game_discount_price_usd})
+        db.info.insert_one({'platform': 'humble', 'link': game_link, 'img': game_img, 'title': game_title, 'original_price': game_original_price, 'discount_rate': game_discount_rate, 'discount_price': game_discount_price, 'original_price_usd': game_original_price_usd, 'discount_price_usd': game_discount_price_usd})
 
 def gog_sale():
     url1 = 'https://www.gog.com/games/ajax/filtered?mediaType=game&page=1&price=discounted&sort=popularity'
@@ -186,7 +222,7 @@ def gog_sale():
         # for a in db.info.find():
         #     if {a['title'] : { "$eq": game_title }} == 0:
         #         db.info.remove(a['title'])
-        db.info.insert_one({'platform': 'gog', 'link': game_link, 'img': game_img, 'title': game_title, 'original_price': game_original_price, 'discount_rate': game_discount_rate, 'discount_price': game_discount_price, 'original_price_usd' : game_original_price_usd, 'discount_price_usd' : game_discount_price_usd})
+        db.info.insert_one({'platform': 'gog', 'link': game_link, 'img': game_img, 'title': game_title, 'original_price': game_original_price, 'discount_rate': game_discount_rate, 'discount_price': game_discount_price, 'original_price_usd': game_original_price_usd, 'discount_price_usd': game_discount_price_usd})
 
 def direct_sale():
     whole_source = ""
@@ -218,6 +254,15 @@ def direct_sale():
         game_discount_price = int(game_discount_price)
         game_discount_rate = int(game_discount_rate)
         game_original_price = int(game_original_price)
+
+        def upbit_get_usd_krw():
+            url = 'https://quotation-api-cdn.dunamu.com/v1/forex/recent?codes=FRX.KRWUSD'
+            exchange = requests.get(url).json()
+            return exchange[0]['basePrice']
+
+        krw = upbit_get_usd_krw()
+        game_original_price_usd = round(game_original_price / krw, 2)
+        game_discount_price_usd = round(game_discount_price / krw, 2)
         client = MongoClient('localhost', 27017)
         db = client.dball_games
         # db.info.update_many({'title': game_title}, {'platform': 'direct', 'link': game_link, 'img': game_img, 'title': game_title, 'original_price': game_original_price, 'discount_rate': game_discount_rate, 'discount_price': game_discount_price}, upsert=True)
@@ -225,7 +270,7 @@ def direct_sale():
         # for a in db.info.find():
         #     if {a['title'] : { "$eq": game_title }} == 0:
         #         db.info.remove(a['title'])
-        db.info.insert_one({'platform': 'direct', 'link': game_link, 'img': game_img, 'title': game_title, 'original_price': game_original_price, 'discount_rate': game_discount_rate, 'discount_price': game_discount_price})
+        db.info.insert_one({'platform': 'direct', 'link': game_link, 'img': game_img, 'title': game_title, 'original_price': game_original_price, 'discount_rate': game_discount_rate, 'discount_price': game_discount_price, 'original_price_usd': game_original_price_usd, 'discount_price_usd': game_discount_price_usd})
 
 steam_sale()
 uplay_sale()

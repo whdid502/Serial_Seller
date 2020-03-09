@@ -24,7 +24,14 @@ for game in games:
     game_original_price = int(game_original_price)
     game_discount_rate = int(game_discount_rate)
     game_discount_price = int(game_discount_price)
-    print(game_title, game_original_price, game_discount_rate, game_discount_price)
+    def upbit_get_usd_krw():
+        url = 'https://quotation-api-cdn.dunamu.com/v1/forex/recent?codes=FRX.KRWUSD'
+        exchange = requests.get(url).json()
+        return exchange[0]['basePrice']
+    krw = upbit_get_usd_krw()
+    game_original_price_usd = round(game_original_price / krw, 2)
+    game_discount_price_usd = round(game_discount_price / krw, 2)
+    print(game_title, game_original_price, game_original_price_usd, game_discount_rate, game_discount_price, game_discount_price_usd)
 
     # def get_rate():
     #     discount_rate = 100 - (float(game_discount_price) / float(game_original_price) * 100)

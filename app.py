@@ -24,11 +24,9 @@ def get_steam_sale():
   sort_page = request.args['page']
 
   if platform in ['steam', 'uplay', 'epic', 'direct', 'humble', 'gog']:
-      filtered_usd_db = db.info.find({"$and": [{'platform': platform}, {"original_price_usd":{"$exists":True}}]})
-      filtered_krw_db = db.info.find({"$and": [{'platform': platform}, {"original_price_usd":{"$exists":False}}]})
+      filtered_db = db.info.find({'platform': platform})
   elif platform == 'all':
-      filtered_usd_db = db.info.find({"original_price_usd":{"$exists":True}})
-      filtered_krw_db = db.info.find({"original_price_usd":{"$exists":False}})
+      filtered_db = db.info.find()
 
   if sort_order == 'asc':
       sort_order = pymongo.ASCENDING
@@ -36,27 +34,21 @@ def get_steam_sale():
       sort_order = pymongo.DESCENDING
 
   if sort_condition in ['discount_price', 'discount_rate', 'orginal_price']:
-      intermediate_usd_db = filtered_usd_db.sort(sort_condition, sort_order)
-      intermediate_krw_db = filtered_krw_db.sort(sort_condition, sort_order)
+      intermediate_db = filtered_db.sort(sort_condition, sort_order)
   else:
-      intermediate_usd_db = filtered_usd_db.sort('page', pymongo.ASCENDING)
-      intermediate_krw_db = filtered_krw_db.sort('page', pymongo.ASCENDING)
+      intermediate_db = filtered_db.sort('page', pymongo.ASCENDING)
 
 
   sort_page = int(sort_page)
   if sort_page in range(1,100):
-      result_usd_db = intermediate_usd_db.skip((sort_page-1)*16).limit(16)
-      result_krw_db = intermediate_krw_db.skip((sort_page-1)*16).limit(16)
+      result_db = intermediate_db.skip((sort_page-1)*16).limit(16)
   else:
-      result_usd_db = intermediate_usd_db
-      result_krw_db = intermediate_krw_db
+      result_db = intermediate_db
 
   output=[]
 
-  for s in result_usd_db:
+  for s in result_db:
           output.append({'platform': s['platform'], 'link': s['link'], 'img': s['img'], 'title': s['title'], 'original_price': s['original_price'], 'discount_rate': s['discount_rate'], 'discount_price': s['discount_price'], 'original_price_usd': s['original_price_usd'], 'discount_price_usd': s['discount_price_usd']})
-  for s in result_krw_db:
-          output.append({'platform': s['platform'], 'link': s['link'], 'img': s['img'], 'title': s['title'], 'original_price': s['original_price'],'discount_rate': s['discount_rate'], 'discount_price': s['discount_price']})
   return jsonify({'result': output})
   #
   # platform_params = request.args.get('platform', platform)
