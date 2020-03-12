@@ -5,15 +5,22 @@
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <meta name="description" content="Slide Down Box Menu with jQuery and CSS3" />
   <meta name="keywords" content="jquery, css3, sliding, box, menu, cube, navigation, portfolio, thumbnails"/>
-  <link href="https://fonts.googleapis.com/css?family=Yeon+Sung&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css?family=Yeon+Sung&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"/>
   <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon"/>
   <link rel="stylesheet" href="{{ url_for('static', filename='../static/game_sale_style/nav_style.css') }}" type="text/css" media="screen"/>
-  <link rel="stylesheet" href="{{ url_for('static', filename='../static/game_sale_style/basic_style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='../static/game_sale_style/basic_style.css') }}"/>
   <!-- <link rel="stylesheet" href="../static/game_sale_style/nav_style.css"> -->
   <!-- <link rel="stylesheet" href="../static/game_sale_style/basic_style.css"> -->
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
   <script type="text/javascript" src="{{ url_for('static', filename='game_sale_nav/jquery.easing.1.3.js') }}"></script>
+  <!-- 자동검색 -->
+  <!-- <script type="text/javascript" src="../static/index_jquery/lib/jquery.js"></script> -->
+  <script type='text/javascript' src='../static/index_jquery/lib/jquery.bgiframe.min.js'></script>
+  <script type='text/javascript' src='../static/index_jquery/lib/jquery.ajaxQueue.js'></script>
+  <script type='text/javascript' src='../static/index_jquery/jquery.autocomplete.js'></script>
+  <link rel="stylesheet" type="text/css" href="../static/index_jquery/jquery.autocomplete.css" />
+  <!-- 자동검색 -->
   <script type="text/javascript">
   $(function() {
     $('#sdt_menu > li').bind('mouseenter',function(){
@@ -62,8 +69,8 @@
         .animate({'top':'25px'},500);
       });
     });
+
     function index_game() {
-      var game_title_collection = [];
       $.ajax({
         type:"GET",
         url: "/all_games_info?platform=all&sort=&order=&page=0",
@@ -81,12 +88,35 @@
             var game_discount_price = game_data_onsale[i]['discount_price'];
             if (indexed_game == game_title){
               $('#game_td').empty();
-              $('#index_result').append("<tr><a href=" + game_link + "><td>" + game_platform + "</td><td>" + game_title + "</td><td>" + game_original_price + "</td><td>" +game_discount_rate + "</td><td>" + game_discount_price + "</td></a></tr>")
+              $('#index_result').append("<tr><a href=" + game_link + "><td>" + game_platform + "</td><td>" + game_title + "</td><td>" + game_original_price + "</td><td>" +game_discount_rate + "</td><td>" + game_discount_price + "</td></a></tr>");
             }
           }
         }
       });
-    }
+    };
+    $(document).ready(function(){
+      var title_for_index = [];
+      $.ajax({
+        type:"GET",
+        url: "/all_games_info?platform=all&sort=&order=&page=0",
+        data: {},
+        success : function(response){
+          var indexed_game = $('.index_bar_size').val();
+          var game_data_onsale = response['result'];
+          for(i=0; i < game_data_onsale.length; i++){
+            var game_title = game_data_onsale[i]['title'];
+            title_for_index.push(game_title);
+          };
+          $(".index_bar_size").autocomplete(title_for_index,{
+            matchContains: true,
+            selectFirst: false
+          });
+        }
+      })
+    });
+
+
+
 
 
     </script>
@@ -95,7 +125,7 @@
     <div class="index_bar_container">
 
       <div class="input-group mb-3">
-        <input type="text" class="index_bar_size" placeholder="게임을 검색하세요" aria-label="Recipient's username" aria-describedby="button-addon2">
+        <input id="index_text" type="text" class="index_bar_size" placeholder="게임을 검색하세요" aria-label="Recipient's username" aria-describedby="button-addon2">
         <div class="input-group-append">
           <button class="btn btn-outline-secondary index7e7. index_button_size" type="button" id="button-addon2" onclick="index_game()">검색</button>
         </div>
