@@ -47,7 +47,7 @@
           var game_discount_price = game_data[i]['discount_price'];
           var game_original_price_usd = game_data[i]['original_price_usd'];
           var game_discount_price_usd = game_data[i]['discount_price_usd'];
-          $('#card_container').append("<div class='card card_num" + i + " card_style' style='width: 18rem;'><img class='card_platform_img' alt='...'/><img class='card-img-top card_game_img' alt='....'/><div class='card-body'><h5 class='card-title'></h5><div class='card_price'><s></s><span class='card_discount_rate'></span><span class='card_discount_price'></span></div><a class='btn btn-primary btn_puchase'>구매하러가기</a><a class='btn btn-primary btn_wishlist'>찜해두기</a></div></div>");
+          $('#card_container').append("<div class='card card_num" + i + " card_style' style='width: 18rem;'><img class='card_platform_img' alt='...'/><img class='card-img-top card_game_img' alt='....'/><div class='card-body card_body_style'><h4 class='card-title'></h4><div class='card_price'><s></s><span class='card_discount_rate'></span><span class='card_discount_price'></span></div><a class='btn btn-dark btn-outline-warning btn_puchase'>구매하러가기</a><br/><a href='#' class='btn btn-dark btn-outline-warning btn_wishlist'>찜해두기</a></div></div>");
 
 
           if(game_platform == 'steam'){
@@ -64,19 +64,17 @@
             $('div.card_num' + i).children('img.card_platform_img').attr('src', '../static/images/direct_icon.jpg')
           }
           $('div.card_num' + i).children('img.card-img-top').attr('src', game_img)
-          $('div.card_num' + i).children('div.card-body').children('h5.card-title').text(game_title)
-          $('div.card_num' + i).children('div.card-body').children('div.card_price').children('span.card_discount_rate').text(game_discount_rate)
+          $('div.card_num' + i).children('div.card-body').children('h4.card-title').text(game_title)
+          $('div.card_num' + i).children('div.card-body').children('div.card_price').children('span.card_discount_rate').text(game_discount_rate + '%')
           $('div.card_num' + i).children('div.card-body').children('a.btn_puchase').attr('href', game_link)
-          if(platform == 'gog' || platform == 'humble'){
-            $('div.card_num' + i).children('div.card-body').children('div.card_price').children('s').text(game_original_price_usd)
-            $('div.card_num' + i).children('div.card-body').children('div.card_price').children('span.card_discount_price').text(game_discount_price_usd)
+          if(game_platform == 'gog' || game_platform == 'humble'){
+            $('div.card_num' + i).children('div.card-body').children('div.card_price').children('s').text('$' + game_original_price_usd)
+            $('div.card_num' + i).children('div.card-body').children('div.card_price').children('span.card_discount_price').text('$' + game_discount_price_usd)
           }else {
-            $('div.card_num' + i).children('div.card-body').children('div.card_price').children('s').text(game_original_price)
-            $('div.card_num' + i).children('div.card-body').children('div.card_price').children('span.card_discount_price').text(game_discount_price)
+            $('div.card_num' + i).children('div.card-body').children('div.card_price').children('s').text(game_original_price + '원')
+            $('div.card_num' + i).children('div.card-body').children('div.card_price').children('span.card_discount_price').text(game_discount_price + '원')
           }
-          if(game_discount_rate == 100){
-            $('div.card_num' + i).addClass('full_rate')
-          }else if (game_discount_rate < 100 && game_discount_rate >= 80) {
+          if (game_discount_rate <= 100 && game_discount_rate >= 80) {
             $('div.card_num' + i).addClass('very_high_rate')
           }else if (game_discount_rate < 80 && game_discount_rate >= 50) {
             $('div.card_num' + i).addClass('high_rate')
@@ -84,8 +82,6 @@
             $('div.card_num' + i).addClass('adjust_rate')
           }else if (game_discount_rate < 30 && game_discount_rate >= 10) {
             $('div.card_num' + i).addClass('low_rate')
-          }else if (game_discount_rate < 10) {
-            $('div.card_num' + i).addClass('very_low_rate')
           }
         }
         $.ajax({
