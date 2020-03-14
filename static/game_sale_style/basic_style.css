@@ -36,10 +36,6 @@ align-content: space-around;
 #all_games_table{
   color: white;
 }
-.unvisible{
-  /* visibility: hidden; */
-  display: none;
-}
 #index_result{
   color: white;
 }
@@ -109,4 +105,25 @@ h4{
   height: 50px;
   font-size: 1em;
   font-weight: bold;
+  border-bottom: 1px solid black;
 }
+.page_ul_container{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+ul.page_container li{
+  display: inline;
+  width: auto;
+}
+.page_list{
+  margin-left: 5px;
+  margin-right: 5px;
+}
+.page_ul_container{
+  margin-left: auto;
+  margin-right: auto;
+}
+/* .card_price{
+  border-bottom: 1px solid black;
+} */

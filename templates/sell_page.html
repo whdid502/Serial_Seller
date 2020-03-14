@@ -91,23 +91,65 @@
           success : function(response){
             var max_game_data = response['result'].length;
             var max_page = Math.ceil(max_game_data/16)
-            $('.pagination').append("<li class=" + "\'page_item page_no1\'" + "><a class =" + "\'page-link\'" + "onclick=" + "\'change_page(" + 1 + ")\'" + ">1</a></li>");
-            for (i=2; i < max_page; i++){
-              $('.pagination').append("<li class=" + "\'page_item unvisible page_no" + i + "\'" + "><a class =" + "\'page-link\'" + "onclick=" + "\'change_page(" + i +")\'" + ">" + i + "</a></li>")
-            }
-            $('.pagination').append("<li class=" + "\'page_item page_no" + max_page + "\'" + "><a class =" + "\'page-link\'" + "onclick=" + "\'change_page(" + max_page + ")\'" + ">" + max_page + "</a></li>");
-            if (max_page == 1){
-              $('.pagination li:nth-child(2)').remove();
-            }
-            for(var n = 1; n < max_page+1; n++){
-              if(page == n){
-                $(".page_no" + n).removeClass('unvisible');
-                $(".page_no" + n).next().removeClass('unvisible');
-                $(".page_no" + n).next().next().removeClass('unvisible');
-                $(".page_no" + n).prev().removeClass('unvisible');
-                $(".page_no" + n).prev().prev().removeClass('unvisible');
+            $('.page_container').append("<li class='page_list first_page'><button class='btn-dark btn btn-outline-light' onclick='change_page(" + 1 + ")'" + ">첫페이지</button></li>");
+            if(max_page > 4){
+              for (i=3; i < max_page-1; i++){
+                if(page == i){
+                  $('.page_container').append("<li class='page_list page_no" + (i-2) + "'><button class ='btn-dark btn btn-outline-light' onclick='change_page(" + (i-2) +")'>" + (i-2) + "</button></li>")
+                  $('.page_container').append("<li class='page_list page_no" + (i-1) + "'><button class ='btn-dark btn btn-outline-light' onclick='change_page(" + (i-1) +")'>" + (i-1) + "</button></li>")
+                  $('.page_container').append("<li class='page_list page_no" + i + "'><button class ='btn-dark btn btn-outline-light' onclick='change_page(" + i +")'>" + i + "</button></li>")
+                  $('.page_container').append("<li class='page_list page_no" + (i+1) + "'><button class ='btn-dark btn btn-outline-light' onclick='change_page(" + (i+1) +")'>" + (i+1) + "</button></li>")
+                  $('.page_container').append("<li class='page_list page_no" + (i+2) + "'><button class ='btn-dark btn btn-outline-light' onclick='change_page(" + (i+1) +")'>" + (i+2) + "</button></li>")
+                }
+              }
+              if(page == 1 || page == 2) {
+                $('.page_container').append("<li class='page_list page_no1'><button class ='btn-dark btn btn-outline-light' onclick='change_page(1)'>1</button></li>")
+                $('.page_container').append("<li class='page_list page_no2'><button class ='btn-dark btn btn-outline-light' onclick='change_page(2)'>2</button></li>")
+                $('.page_container').append("<li class='page_list page_no3'><button class ='btn-dark btn btn-outline-light' onclick='change_page(3)'>3</button></li>")
+                $('.page_container').append("<li class='page_list page_no4'><button class ='btn-dark btn btn-outline-light' onclick='change_page(4)'>4</button></li>")
+                $('.page_container').append("<li class='page_list page_no5'><button class ='btn-dark btn btn-outline-light' onclick='change_page(5)'>5</button></li>")
+              }
+              else if (page == max_page || page == (max_page-1)) {
+                $('.page_container').append("<li class='page_list page_no" + (max_page-4) + "'><button class ='btn-dark btn btn-outline-light' onclick='change_page(" + (max_page-4) +")'>" + (max_page-4) + "</button></li>")
+                $('.page_container').append("<li class='page_list page_no" + (max_page-3) + "'><button class ='btn-dark btn btn-outline-light' onclick='change_page(" + (max_page-3) +")'>" + (max_page-3) + "</button></li>")
+                $('.page_container').append("<li class='page_list page_no" + (max_page-2) + "'><button class ='btn-dark btn btn-outline-light' onclick='change_page(" + (max_page-2) +")'>" + (max_page-2) + "</button></li>")
+                $('.page_container').append("<li class='page_list page_no" + (max_page-1) + "'><button class ='btn-dark btn btn-outline-light' onclick='change_page(" + (max_page-1) +")'>" + (max_page-1) + "</button></li>")
+                $('.page_container').append("<li class='page_list page_no" + max_page + "'><button class ='btn-dark btn btn-outline-light' onclick='change_page(" + max_page +")'>" + max_page + "</button></li>")
+              }
+            }else if (max_page == 1) {
+              $('.page_container').append("<li class='page_list page_no1'><button class ='btn-dark btn btn-outline-light' onclick='change_page(1)'>1</button></li>")
+            }else if (max_page == 2) {
+              $('.page_container').append("<li class='page_list page_no1'><button class ='btn-dark btn btn-outline-light' onclick='change_page(1)'>1</button></li>")
+              $('.page_container').append("<li class='page_list page_no2'><button class ='btn-dark btn btn-outline-light' onclick='change_page(2)'>2</button></li>")
+            }else if (max_page == 3){
+              $('.page_container').append("<li class='page_list page_no1'><button class ='btn-dark btn btn-outline-light' onclick='change_page(1)'>1</button></li>")
+              $('.page_container').append("<li class='page_list page_no2'><button class ='btn-dark btn btn-outline-light' onclick='change_page(2)'>2</button></li>")
+              $('.page_container').append("<li class='page_list page_no3'><button class ='btn-dark btn btn-outline-light' onclick='change_page(3)'>3</button></li>")
+            }else if (max_page == 4) {
+              $('.page_container').append("<li class='page_list page_no1'><button class ='btn-dark btn btn-outline-light' onclick='change_page(1)'>1</button></li>")
+              $('.page_container').append("<li class='page_list page_no2'><button class ='btn-dark btn btn-outline-light' onclick='change_page(2)'>2</button></li>")
+              $('.page_container').append("<li class='page_list page_no3'><button class ='btn-dark btn btn-outline-light' onclick='change_page(3)'>3</button></li>")
+              $('.page_container').append("<li class='page_list page_no4'><button class ='btn-dark btn btn-outline-light' onclick='change_page(4)'>4</button></li>")
+            };
+
+            $('.page_container').append("<li class='page_list last_page'><button class ='btn-dark btn btn-outline-light' onclick='change_page(" + max_page + ")'>마지막페이지</button></li>");
+            for(i=2; i < max_page; i++){
+              if(page == i){
+                $('.page_container').children('.page_no'+i).children('button').attr('disabled', '')
               }
             }
+            if (page == max_page && max_page == 1) {
+              $('.page_container').children('.first_page').children('button').attr('disabled', '')
+              $('.page_container').children('.page_no1').children('button').attr('disabled', '')
+              $('.page_container').children('.last_page').children('button').attr('disabled', '')
+            }else if (page == 1) {
+              $('.page_container').children('.page_no1').children('button').attr('disabled', '')
+              $('.page_container').children('.first_page').children('button').attr('disabled', '')
+            }else if (page == max_page) {
+              $('.page_container').children('.page_no' + max_page).children('button').attr('disabled', '')
+              $('.page_container').children('.last_page').children('button').attr('disabled', '')
+            }
+
           }
         })
       }
@@ -189,12 +231,12 @@
     </div>
   </div>
   <ul id="card_container">
-
   </ul>
-  <nav aria-label="Page navigation example">
-    <ul class="pagination">
+  <div class="page_ul_container">
+    <ul class="page_container">
     </ul>
-  </nav>
+  </div>
+
   <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
