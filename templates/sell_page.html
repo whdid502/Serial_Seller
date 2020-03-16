@@ -75,13 +75,7 @@
             $('div.card_num' + i).children('div.card-body').children('div.card_price').children('span.card_discount_price').text(game_discount_price + '원')
           }
           if (game_discount_rate <= 100 && game_discount_rate >= 80) {
-            $('div.card_num' + i).addClass('very_high_rate')
-          }else if (game_discount_rate < 80 && game_discount_rate >= 50) {
-            $('div.card_num' + i).addClass('high_rate')
-          }else if (game_discount_rate < 50 && game_discount_rate >= 30) {
-            $('div.card_num' + i).addClass('adjust_rate')
-          }else if (game_discount_rate < 30 && game_discount_rate >= 10) {
-            $('div.card_num' + i).addClass('low_rate')
+            $('div.card_num' + i).addClass('block')
           }
         }
         $.ajax({
@@ -204,17 +198,12 @@
   </script>
 </head>
 <body>
-  <!-- <a href="/serial_seller"><h1 contenteditable spellcheck="false">연쇄 할인마</h1></a>
-  <div class="sign">
-    <span class="sign__word">연쇄 할인마</span>
-  </div> -->
-  <a href="/serial_seller">
-  <div class="container">
-  <div class="neon">serial</div>
-  <div class="flux">seller</div>
-</div>
-</a>
-  <div class="dropdown">
+  <div class="top_menu">
+
+  <a href="/serial_seller" class="sign">
+    <span class="fast-flicker">s</span>eria<span class="flicker">l sel</span>ler
+  </a>
+  <div class="dropdown drop_platform">
     <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
       다른 플랫폼 둘러보기
     </button>
@@ -227,7 +216,7 @@
       <a class="dropdown-item direct_item" href="#" onclick="change_platform('direct')">다이렉트게임즈</a>
     </div>
   </div>
-  <div class="dropdown">
+  <div class="dropdown drop_filtering">
     <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
       필터링 변경
     </button>
@@ -238,6 +227,7 @@
       <a class="dropdown-item high_rate_item" href="#" onclick="change_filter('discount_rate','dsc')">최고할인율 순서</a>
     </div>
   </div>
+</div>
   <ul id="card_container">
   </ul>
   <div class="page_ul_container">

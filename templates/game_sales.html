@@ -86,9 +86,39 @@
             var game_original_price = game_data_onsale[i]['original_price'];
             var game_discount_rate = game_data_onsale[i]['discount_rate'];
             var game_discount_price = game_data_onsale[i]['discount_price'];
+            var game_original_price_usd = game_data_onsale[i]['original_price_usd'];
+            var game_discount_price_usd = game_data_onsale[i]['discount_price_usd'];
             if (indexed_game == game_title){
               $('#game_td').empty();
-              $('#index_result').append("<tr><a href=" + game_link + "><td>" + game_platform + "</td><td>" + game_title + "</td><td>" + game_original_price + "</td><td>" +game_discount_rate + "</td><td>" + game_discount_price + "</td></a></tr>");
+              // $('#index_result').append("<tr><a href=" + game_link + "><td>" + game_platform + "</td><td>" + game_title + "</td><td>" + game_original_price + "</td><td>" +game_discount_rate + "</td><td>" + game_discount_price + "</td></a></tr>");
+              $('#index_result').append("<div class='card card_style' style='width: 18rem;'><img class='card_platform_img' alt='...'/><img class='card-img-top card_game_img' alt='....'/><div class='card-body card_body_style'><h4 class='card-title'></h4><div class='card_price'><s></s><span class='card_discount_rate'></span><span class='card_discount_price'></span></div><a class='btn btn-dark btn-outline-warning btn_puchase'>구매하러가기</a><br/><a href='#' class='btn btn-dark btn-outline-warning btn_wishlist'>찜해두기</a></div></div>");
+              if(game_platform == 'steam'){
+                $('div.card').children('img.card_platform_img').attr('src', '../static/images/steam_icon.jpg')
+              }else if (game_platform == 'uplay') {
+                $('div.card').children('img.card_platform_img').attr('src', '../static/images/uplay_icon.jpg')
+              }else if (game_platform == 'epic') {
+                $('div.card').children('img.card_platform_img').attr('src', '../static/images/epic_icon.jpg')
+              }else if (game_platform == 'humble') {
+                $('div.card').children('img.card_platform_img').attr('src', '../static/images/humble_icon.jpg')
+              }else if (game_platform == 'gog') {
+                $('div.card').children('img.card_platform_img').attr('src', '../static/images/gog_icon.jpg')
+              }else if (game_platform == 'direct') {
+                $('div.card').children('img.card_platform_img').attr('src', '../static/images/direct_icon.jpg')
+              }
+              $('div.card').children('img.card-img-top').attr('src', game_img)
+              $('div.card').children('div.card-body').children('h4.card-title').text(game_title)
+              $('div.card').children('div.card-body').children('div.card_price').children('span.card_discount_rate').text(game_discount_rate + '%')
+              $('div.card').children('div.card-body').children('a.btn_puchase').attr('href', game_link)
+              if(game_platform == 'gog' || game_platform == 'humble'){
+                $('div.card').children('div.card-body').children('div.card_price').children('s').text('$' + game_original_price_usd)
+                $('div.card').children('div.card-body').children('div.card_price').children('span.card_discount_price').text('$' + game_discount_price_usd)
+              }else {
+                $('div.card').children('div.card-body').children('div.card_price').children('s').text(game_original_price + '원')
+                $('div.card').children('div.card-body').children('div.card_price').children('span.card_discount_price').text(game_discount_price + '원')
+              }
+              if (game_discount_rate <= 100 && game_discount_rate >= 80) {
+                $('div.card').addClass('block')
+              }
             }
           }
         }
@@ -122,8 +152,11 @@
     </script>
   </head>
   <body>
+    <div class="top_menu">
+    <a href="/serial_seller" class="sign">
+      <span class="fast-flicker">ser</span>ial s<span class="flicker">elle</span>r
+    </a>
     <div class="index_bar_container">
-
       <div class="input-group mb-3">
         <input id="index_text" type="text" class="index_bar_size" placeholder="게임을 검색하세요" aria-label="Recipient's username" aria-describedby="button-addon2">
         <div class="input-group-append">
@@ -131,8 +164,8 @@
         </div>
       </div>
     </div>
+  </div>
     <div class="content">
-      <a href="/serial_seller"><h1 class="title_style">연쇄 할인마(게임할인정보모음)</h1></a>
       <ul id="sdt_menu" class="sdt_menu">
         <li>
           <a>
@@ -198,20 +231,7 @@
     </div>
     <div>
     </div>
-    <table id="index_result">
-      <thead>
-        <tr>
-          <td>플랫폼</td>
-          <td>게임</td>
-          <td>원가</td>
-          <td>할인율</td>
-          <td>할인가</td>
-        </tr>
-      </thead>
-      <tbody id="game_td">
-      </tbody>
-    </table>
-
-
+    <div id="index_result">
+    </div>
   </body>
   </html>

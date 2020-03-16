@@ -7,22 +7,14 @@ body{
 ul.sdt_menu{
   margin-top:150px;
 }
-/* .st_card_body{
-border: 1px solid white;
-display: flex;
-flex-direction: row;
-flex-wrap: wrap;
-justify-content: space-around;
-align-content: space-around;
-} */
 .title_style{
   color : #6E6E6E
 }
 .index_bar_container{
   width: 300px;
-  position: relative;
+  position: absolute;
   top: 10px;
-  left: 1020px;
+  right: 20px;
 }
 .index_bar_size{
   width: 180px;
@@ -124,69 +116,254 @@ ul.page_container li{
   margin-left: auto;
   margin-right: auto;
 }
-/* .card_price{
-  border-bottom: 1px solid black;
-} */
 @font-face {
-  font-family: neon;
-  src: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/707108/neon.ttf);
+  font-family: Clip;
+  src: url("https://acupoftee.github.io/fonts/Clip.ttf");
 }
-
-.container {
-  display: table-cell;
-  text-align: center;
-  vertical-align: middle;
-}
-
-.neon {
-  font-family: neon;
-  color: #FB4264;
-  font-size: 4vw;
-  line-height: 4vw;
-  text-shadow: 0 0 3vw #F40A35;
-}
-
-.flux {
-  font-family: neon;
-  color: #426DFB;
-  font-size: 4vw;
-  line-height: 4vw;
-  text-shadow: 0 0 3vw #2356FF;
-}
-
-.neon {
-  animation: neon 1s ease infinite;
-  -moz-animation: neon 1s ease infinite;
-  -webkit-animation: neon 1s ease infinite;
-}
-
-@keyframes neon {
-  0%,
-  100% {
-    text-shadow: 0 0 1vw #FA1C16, 0 0 3vw #FA1C16, 0 0 10vw #FA1C16, 0 0 10vw #FA1C16, 0 0 .4vw #FED128, .5vw .5vw .1vw #806914;
-    color: #FED128;
+.sign {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  width: 450px;
+  height: 70px;
+  background-image: radial-gradient(
+    ellipse 50% 35% at 50% 50%,
+    #6b1839,
+    transparent
+    );
+    letter-spacing: 1;
+    font-family: "Clip";
+    text-transform: uppercase;
+    font-size: 4em;
+    color: #ffe6ff;
+    text-shadow: 0 0 0.6rem #ffe6ff, 0 0 1.5rem #ff65bd,
+    -0.2rem 0.1rem 1rem #ff65bd, 0.2rem 0.1rem 1rem #ff65bd,
+    0 -0.5rem 2rem #ff2483, 0 0.5rem 3rem #ff2483;
+    animation: shine 2s forwards, flicker 3s infinite;
   }
-  50% {
-    text-shadow: 0 0 .5vw #800E0B, 0 0 1.5vw #800E0B, 0 0 5vw #800E0B, 0 0 5vw #800E0B, 0 0 .2vw #800E0B, .5vw .5vw .1vw #40340A;
-    color: #806914;
+
+  @keyframes blink {
+    0%,
+    22%,
+    36%,
+    75% {
+      color: #ffe6ff;
+      text-shadow: 0 0 0.6rem #ffe6ff, 0 0 1.5rem #ff65bd,
+      -0.2rem 0.1rem 1rem #ff65bd, 0.2rem 0.1rem 1rem #ff65bd,
+      0 -0.5rem 2rem #ff2483, 0 0.5rem 3rem #ff2483;
+    }
+    28%,
+    33% {
+      color: #ff65bd;
+      text-shadow: none;
+    }
+    82%,
+    97% {
+      color: #ff2483;
+      text-shadow: none;
+    }
   }
+
+  .flicker {
+    animation: shine 2s forwards, blink 3s 2s infinite;
+  }
+
+  .fast-flicker {
+    animation: shine 2s forwards, blink 10s 1s infinite;
+  }
+
+  @keyframes shine {
+    0% {
+      color: #6b1839;
+      text-shadow: none;
+    }
+    100% {
+      color: #ffe6ff;
+      text-shadow: 0 0 0.6rem #ffe6ff, 0 0 1.5rem #ff65bd,
+      -0.2rem 0.1rem 1rem #ff65bd, 0.2rem 0.1rem 1rem #ff65bd,
+      0 -0.5rem 2rem #ff2483, 0 0.5rem 3rem #ff2483;
+    }
+  }
+
+  @keyframes flicker {
+    from {
+      opacity: 1;
+    }
+
+    4% {
+      opacity: 0.9;
+    }
+
+    6% {
+      opacity: 0.85;
+    }
+
+    8% {
+      opacity: 0.95;
+    }
+
+    10% {
+      opacity: 0.9;
+    }
+
+    11% {
+      opacity: 0.922;
+    }
+
+    12% {
+      opacity: 0.9;
+    }
+
+    14% {
+      opacity: 0.95;
+    }
+
+    16% {
+      opacity: 0.98;
+    }
+
+    17% {
+      opacity: 0.9;
+    }
+
+    19% {
+      opacity: 0.93;
+    }
+
+    20% {
+      opacity: 0.99;
+    }
+
+    24% {
+      opacity: 1;
+    }
+
+    26% {
+      opacity: 0.94;
+    }
+
+    28% {
+      opacity: 0.98;
+    }
+
+    37% {
+      opacity: 0.93;
+    }
+
+    38% {
+      opacity: 0.5;
+    }
+
+    39% {
+      opacity: 0.96;
+    }
+
+    42% {
+      opacity: 1;
+    }
+
+    44% {
+      opacity: 0.97;
+    }
+
+    46% {
+      opacity: 0.94;
+    }
+
+    56% {
+      opacity: 0.9;
+    }
+
+    58% {
+      opacity: 0.9;
+    }
+
+    60% {
+      opacity: 0.99;
+    }
+
+    68% {
+      opacity: 1;
+    }
+
+    70% {
+      opacity: 0.9;
+    }
+
+    72% {
+      opacity: 0.95;
+    }
+
+    93% {
+      opacity: 0.93;
+    }
+
+    95% {
+      opacity: 0.95;
+    }
+
+    97% {
+      opacity: 0.93;
+    }
+
+    to {
+      opacity: 1;
+    }
+  }
+  .drop_platform{
+    position: absolute;
+    right: 250px;
+    top: 20px;
+
+    width: 200px;
+    height: 40px;
+  }
+  .drop_filtering{
+    position: absolute;
+    right: 100px;
+    top: 20px;;
+
+    width: 130px;
+    height: 40px;
+  }
+  .top_menu{
+    width: 100%;
+    height: 100px;
+    position: relative;
+  }
+  .block {
 }
 
-.flux {
-  animation: flux 2s linear infinite;
-  -moz-animation: flux 2s linear infinite;
-  -webkit-animation: flux 2s linear infinite;
-  -o-animation: flux 2s linear infinite;
+.block:before, .block:after {
+	content: '';
+	position: absolute;
+	left: -2px;
+	top: -2px;
+	background: linear-gradient(45deg, #fb0094, #0000ff, #00ff00,#ffff00, #ff0000, #fb0094,
+		#0000ff, #00ff00,#ffff00, #ff0000);
+	background-size: 400%;
+	width: calc(100% + 4px);
+	height: calc(100% + 4px);
+	z-index: -1;
+	animation: steam 20s linear infinite;
 }
 
-@keyframes flux {
-  0%,
-  100% {
-    text-shadow: 0 0 1vw #1041FF, 0 0 3vw #1041FF, 0 0 10vw #1041FF, 0 0 10vw #1041FF, 0 0 .4vw #8BFDFE, .5vw .5vw .1vw #147280;
-    color: #28D7FE;
-  }
-  50% {
-    text-shadow: 0 0 .5vw #082180, 0 0 1.5vw #082180, 0 0 5vw #082180, 0 0 5vw #082180, 0 0 .2vw #082180, .5vw .5vw .1vw #0A3940;
-    color: #146C80;
-  }
+@keyframes steam {
+	0% {
+		background-position: 0 0;
+	}
+	50% {
+		background-position: 400% 0;
+	}
+	100% {
+		background-position: 0 0;
+	}
+}
+.block:after {
+	filter: blur(10px);
+}
+#index_result{
+  position: absolute;
+  top: 100px;
+  right: 100px;
 }
