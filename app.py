@@ -13,7 +13,7 @@ def home():
 @app.route('/serial_seller', methods = ['POST', 'GET'])
 def game_main_page():
    return render_template('game_sales.html')
-
+3
 
 @app.route('/sell_page')
 def game_sell_page():
@@ -98,46 +98,6 @@ def all_games():
 @app.route('/mywish_page')
 def game_mywish_page():
    return render_template('mywish_page.html')
-
-@app.route('/uplay_info', methods=['GET'])
-def get_uplay_sale():
-  client = MongoClient('localhost', 27017)
-  db = client.dbgame_sales_info
-  output = []
-  for s in db.sale.find():
-      output.append({'link': s['link'], 'img': s['img'], 'title': s['title'], 'original_price': s['original_price'],
-                     'discount_rate': s['discount_rate'], 'discount_price': s['discount_price']})
-  return jsonify({'result' : output})
-
-@app.route('/epic_info', methods=['GET'])
-def get_epic_sale():
-  client = MongoClient('localhost', 27017)
-  db = client.dbgame_sales_info
-  output = []
-  for s in db.sale.find():
-      output.append({'link': s['link'], 'img': s['img'], 'title': s['title'], 'original_price': s['original_price'],
-                     'discount_rate': s['discount_rate'], 'discount_price': s['discount_price']})
-  return jsonify({'result' : output})
-
-@app.route('/humble_info', methods=['GET'])
-def get_humble_sale():
-  client = MongoClient('localhost', 27017)
-  db = client.dbgame_sales_info
-  output = []
-  for s in db.sale.find():
-      output.append({'img': s['img'], 'title': s['title'], 'original_price': s['original_price'],
-                     'discount_rate': s['discount_rate'], 'discount_price': s['discount_price']})
-  return jsonify({'result' : output})
-
-@app.route('/gog_info', methods=['GET'])
-def get_gog_sale():
-  client = MongoClient('localhost', 27017)
-  db = client.dbgame_sales_info
-  output = []
-  for s in db.sale.find():
-      output.append({'link': s['link'], 'img': s['img'], 'title': s['title'], 'original_price': s['original_price'],
-                     'discount_rate': s['discount_rate'], 'discount_price': s['discount_price']})
-  return jsonify({'result' : output})
 
 if __name__ == '__main__':
    app.run('0.0.0.0',port=5000,debug=True)
