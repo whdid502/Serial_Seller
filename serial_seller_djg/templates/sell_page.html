@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>판매목록</title>
+  {% load static %}
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="description" content="Slide Down Box Menu with jQuery and CSS3" />
+  <meta name="keywords" content="jquery, css3, sliding, box, menu, cube, navigation, portfolio, thumbnails"/>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link rel="stylesheet" href="{% static 'style/basic_style.css' %}">
+  <link href="https://fonts.googleapis.com/css?family=Stylish&display=swap" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script>
+  function get_query_string_object() {
+    var a = window.location.search.substr(1).split('&');
+    if (a == "") return {};
+    var b = {};
+    for (var i = 0; i < a.length; ++i) {
+      var p = a[i].split('=', 2);
+      if (p.length == 1)
+      b[p[0]] = "";
+      else
+      b[p[0]] = decodeURIComponent(p[1].replace(/\+/g, " "));
+    }
+    return b;
+  }
+  var params = get_query_string_object();
+  var platform = params.platform;
+  var page = params.page;
+  var sort = params.sort;
+  var order = params.order;
+  $(document).ready(
+    $.ajax({
+      type: "GET",
+      url: "/all_games_info?platform=" + platform + "&sort=" + sort + "&order=" + order + "&page=" + page,
+      data: {},
+      success: function(response){
+        var game_data = response['result'];
+        for(var i = 0; i < game_data.length; i++){
+          var game_platform = game_data[i]['platform'];
+          var game_title = game_data[i]['title'];
+          var game_img = game_data[i]['img'];
+          var game_link = game_data[i]['link'];
+          var game_original_price = game_data[i]['original_price'];
+          var game_discount_rate = game_data[i]['discount_rate'];
+          var game_discount_price = game_data[i]['discount_price'];
+          var game_original_price_usd = game_data[i]['original_price_usd'];
+          var game_discount_price_usd = game_data[i]['discount_price_usd'];
+          $('#card_container').append("<div class='card card_num" + i + " card_style' style='width: 18rem;'><img class='card_platform_img' alt='...'/><img class='card-img-top card_game_img' alt='....'/><div class='card-body card_body_style'><h4 class='card-title'></h4><div class='card_price'><s></s><span class='card_discount_rate'></span><span class='card_discount_price'></span></div><a class='btn btn-dark btn-outline-warning btn_puchase'>구매하러가기</a><br/><a href='#' class='btn btn-dark btn-outline-warning btn_wishlist'>찜해두기</a></div></div>");
+
+
+          if(game_platform == 'steam'){
+            $('div.card_num' + i).children('img.card_platform_img').attr('src', "{% static 'images/steam_icon.jpg' %}")
+          }else if (game_platform == 'uplay') {
+            $('div.card_num' + i).children('img.card_platform_img').attr('src', "{% static 'images/uplay_icon.jpg' %}")
+          }else if (game_platform == 'epic') {
+            $('div.card_num' + i).children('img.card_platform_img').attr('src', "{% static 'images/epic_icon.jpg' %}")
+          }else if (game_platform == 'humble') {
+            $('div.card_num' + i).children('img.card_platform_img').attr('src', "{% static 'images/humble_icon.jpg' %}")
+          }else if (game_platform == 'gog') {
+            $('div.card_num' + i).children('img.card_platform_img').attr('src', "{% static 'images/gog_icon.jpg' %}")
+          }else if (game_platform == 'direct') {
+            $('div.card_num' + i).children('img.card_platform_img').attr('src', "{% static 'images/direct_icon.jpg' %}")
+          }
+          $('div.card_num' + i).children('img.card-img-top').attr('src', game_img)
+          $('div.card_num' + i).children('div.card-body').children('h4.card-title').text(game_title)
+          $('div.card_num' + i).children('div.card-body').children('div.card_price').children('span.card_discount_rate').text(game_discount_rate + '%')
+          $('div.card_num' + i).children('div.card-body').children('a.btn_puchase').attr('href', game_link)
+          if(game_platform == 'gog' || game_platform == 'humble'){
+            $('div.card_num' + i).children('div.card-body').children('div.card_price').children('s').text('$' + game_original_price_usd)
+            $('div.card_num' + i).children('div.card-body').children('div.card_price').children('span.card_discount_price').text('$' + game_discount_price_usd)
+          }else {
+            $('div.card_num' + i).children('div.card-body').children('div.card_price').children('s').text(game_original_price + '원')
+            $('div.card_num' + i).children('div.card-body').children('div.card_price').children('span.card_discount_price').text(game_discount_price + '원')
+          }
+          if (game_discount_rate <= 100 && game_discount_rate >= 80) {
+            $('div.card_num' + i).addClass('block')
+          }
+        }
+        $.ajax({
+          type:"GET",
+          url: "/all_games_info?platform=" + platform + "&sort=" + sort + "&order=" + order + "&page=0",
+          data: {},
+          success : function(response){
+            var max_game_data = response['result'].length;
+            var max_page = Math.ceil(max_game_data/16)
+            $('.page_container').append("<li class='page_list first_page'><button class='btn-dark btn btn-outline-light' onclick='change_page(" + 1 + ")'" + ">첫페이지</button></li>");
+            if(max_page > 4){
+              for (i=3; i < max_page-1; i++){
+                if(page == i){
+                  $('.page_container').append("<li class='page_list page_no" + (i-2) + "'><button class ='btn-dark btn btn-outline-light' onclick='change_page(" + (i-2) +")'>" + (i-2) + "</button></li>")
+                  $('.page_container').append("<li class='page_list page_no" + (i-1) + "'><button class ='btn-dark btn btn-outline-light' onclick='change_page(" + (i-1) +")'>" + (i-1) + "</button></li>")
+                  $('.page_container').append("<li class='page_list page_no" + i + "'><button class ='btn-dark btn btn-outline-light' onclick='change_page(" + i +")'>" + i + "</button></li>")
+                  $('.page_container').append("<li class='page_list page_no" + (i+1) + "'><button class ='btn-dark btn btn-outline-light' onclick='change_page(" + (i+1) +")'>" + (i+1) + "</button></li>")
+                  $('.page_container').append("<li class='page_list page_no" + (i+2) + "'><button class ='btn-dark btn btn-outline-light' onclick='change_page(" + (i+1) +")'>" + (i+2) + "</button></li>")
+                }
+              }
+              if(page == 1 || page == 2) {
+                $('.page_container').append("<li class='page_list page_no1'><button class ='btn-dark btn btn-outline-light' onclick='change_page(1)'>1</button></li>")
+                $('.page_container').append("<li class='page_list page_no2'><button class ='btn-dark btn btn-outline-light' onclick='change_page(2)'>2</button></li>")
+                $('.page_container').append("<li class='page_list page_no3'><button class ='btn-dark btn btn-outline-light' onclick='change_page(3)'>3</button></li>")
+                $('.page_container').append("<li class='page_list page_no4'><button class ='btn-dark btn btn-outline-light' onclick='change_page(4)'>4</button></li>")
+                $('.page_container').append("<li class='page_list page_no5'><button class ='btn-dark btn btn-outline-light' onclick='change_page(5)'>5</button></li>")
+              }
+              else if (page == max_page || page == (max_page-1)) {
+                $('.page_container').append("<li class='page_list page_no" + (max_page-4) + "'><button class ='btn-dark btn btn-outline-light' onclick='change_page(" + (max_page-4) +")'>" + (max_page-4) + "</button></li>")
+                $('.page_container').append("<li class='page_list page_no" + (max_page-3) + "'><button class ='btn-dark btn btn-outline-light' onclick='change_page(" + (max_page-3) +")'>" + (max_page-3) + "</button></li>")
+                $('.page_container').append("<li class='page_list page_no" + (max_page-2) + "'><button class ='btn-dark btn btn-outline-light' onclick='change_page(" + (max_page-2) +")'>" + (max_page-2) + "</button></li>")
+                $('.page_container').append("<li class='page_list page_no" + (max_page-1) + "'><button class ='btn-dark btn btn-outline-light' onclick='change_page(" + (max_page-1) +")'>" + (max_page-1) + "</button></li>")
+                $('.page_container').append("<li class='page_list page_no" + max_page + "'><button class ='btn-dark btn btn-outline-light' onclick='change_page(" + max_page +")'>" + max_page + "</button></li>")
+              }
+            }else if (max_page == 1) {
+              $('.page_container').append("<li class='page_list page_no1'><button class ='btn-dark btn btn-outline-light' onclick='change_page(1)'>1</button></li>")
+            }else if (max_page == 2) {
+              $('.page_container').append("<li class='page_list page_no1'><button class ='btn-dark btn btn-outline-light' onclick='change_page(1)'>1</button></li>")
+              $('.page_container').append("<li class='page_list page_no2'><button class ='btn-dark btn btn-outline-light' onclick='change_page(2)'>2</button></li>")
+            }else if (max_page == 3){
+              $('.page_container').append("<li class='page_list page_no1'><button class ='btn-dark btn btn-outline-light' onclick='change_page(1)'>1</button></li>")
+              $('.page_container').append("<li class='page_list page_no2'><button class ='btn-dark btn btn-outline-light' onclick='change_page(2)'>2</button></li>")
+              $('.page_container').append("<li class='page_list page_no3'><button class ='btn-dark btn btn-outline-light' onclick='change_page(3)'>3</button></li>")
+            }else if (max_page == 4) {
+              $('.page_container').append("<li class='page_list page_no1'><button class ='btn-dark btn btn-outline-light' onclick='change_page(1)'>1</button></li>")
+              $('.page_container').append("<li class='page_list page_no2'><button class ='btn-dark btn btn-outline-light' onclick='change_page(2)'>2</button></li>")
+              $('.page_container').append("<li class='page_list page_no3'><button class ='btn-dark btn btn-outline-light' onclick='change_page(3)'>3</button></li>")
+              $('.page_container').append("<li class='page_list page_no4'><button class ='btn-dark btn btn-outline-light' onclick='change_page(4)'>4</button></li>")
+            };
+
+            $('.page_container').append("<li class='page_list last_page'><button class ='btn-dark btn btn-outline-light' onclick='change_page(" + max_page + ")'>마지막페이지</button></li>");
+            for(i=2; i < max_page; i++){
+              if(page == i){
+                $('.page_container').children('.page_no'+i).children('button').attr('disabled', '')
+              }
+            }
+            if (page == max_page && max_page == 1) {
+              $('.page_container').children('.first_page').children('button').attr('disabled', '')
+              $('.page_container').children('.page_no1').children('button').attr('disabled', '')
+              $('.page_container').children('.last_page').children('button').attr('disabled', '')
+            }else if (page == 1) {
+              $('.page_container').children('.page_no1').children('button').attr('disabled', '')
+              $('.page_container').children('.first_page').children('button').attr('disabled', '')
+            }else if (page == max_page) {
+              $('.page_container').children('.page_no' + max_page).children('button').attr('disabled', '')
+              $('.page_container').children('.last_page').children('button').attr('disabled', '')
+            }
+
+          }
+        })
+      }
+    })
+  )
+
+  $('.platform_down').ready(function(){
+    if (platform == 'steam'){
+      $('.steam_item').addClass('disabled')
+    } else if(platform == 'uplay'){
+      $('.uplay_item').addClass('disabled')
+    }else if(platform == 'epic'){
+      $('.epic_item').addClass('disabled')
+    }else if(platform == 'gog'){
+      $('.gog_item').addClass('disabled')
+    }else if(platform == 'humble'){
+      $('.humble_item').addClass('disabled')
+    }else if(platform == 'direct'){
+      $('.direct_item').addClass('disabled')
+    };
+    $('.filter_menu').ready(function(){
+      if(sort == 'discount_price' && order == 'asc'){
+        $('.low_price_item').addClass('disabled')
+      }else if (sort == 'discount_price' && order == 'dsc') {
+        $('.high_price_item').addClass('disabled')
+      }else if (sort == 'discount_rate' && order == 'asc') {
+        $('.low_rate_item').addClass('disabled')
+      }else if (sort == 'discount_rate' && order == 'dsc') {
+        $('.high_rate_item').addClass('disabled')
+      }
+    })
+  })
+  var tmp_href = location.href.split("?");
+  var front_url = tmp_href[0];
+  var tmp_param = tmp_href[1].split("&");
+  var param_platform = tmp_param[0];
+  var param_sort = tmp_param[1];
+  var param_order = tmp_param[2];
+  var param_page = tmp_param[3];
+  function change_platform(changed_platform){
+    location.replace(front_url + '?platform=' + changed_platform + '&sort=discount_rate&order=dsc&page=1')
+  };
+  function change_filter(changed_sort,changed_order){
+    location.replace(front_url + '?' + param_platform + '&sort=' + changed_sort + '&order=' + changed_order + '&page=1')
+  };
+  function change_page(changed_page) {
+    location.replace(front_url + '?' + param_platform + '&' + param_sort + '&' + param_order + '&page=' + changed_page)
+  };
+
+
+
+  </script>
+</head>
+<body>
+  <div class="top_menu">
+
+  <a href="/serialseller" class="sign">
+    <span class="fast-flicker">s</span>eria<span class="flicker">l sel</span>ler
+  </a>
+  <div class="dropdown drop_platform">
+    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      다른 플랫폼 둘러보기
+    </button>
+    <div class="dropdown-menu platform_menu" aria-labelledby="dropdownMenuButton">
+      <a class="dropdown-item steam_item" href="#" onclick="change_platform('steam')">스팀</a>
+      <a class="dropdown-item uplay_item" href="#" onclick="change_platform('uplay')">유플레이</a>
+      <a class="dropdown-item epic_item" href="#" onclick="change_platform('epic')">에픽스토어</a>
+      <a class="dropdown-item gog_item" href="#" onclick="change_platform('gog')">GOG.com</a>
+      <a class="dropdown-item humble_item" href="#" onclick="change_platform('humble')">험블번들</a>
+      <a class="dropdown-item direct_item" href="#" onclick="change_platform('direct')">다이렉트게임즈</a>
+    </div>
+  </div>
+  <div class="dropdown drop_filtering">
+    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      필터링 변경
+    </button>
+    <div class="dropdown-menu filter_menu" aria-labelledby="dropdownMenuButton">
+      <a class="dropdown-item low_price_item" href="#" onclick="change_filter('discount_price','asc')">최저가 순서</a>
+      <a class="dropdown-item high_price_item" href="#" onclick="change_filter('discount_price','dsc')">최고가 순서</a>
+      <a class="dropdown-item low_rate_item" href="#" onclick="change_filter('discount_rate','asc')">최저할인율 순서</a>
+      <a class="dropdown-item high_rate_item" href="#" onclick="change_filter('discount_rate','dsc')">최고할인율 순서</a>
+    </div>
+  </div>
+</div>
+  <ul id="card_container">
+  </ul>
+  <div class="page_ul_container">
+    <ul class="page_container">
+    </ul>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+  <!--부트스트랩js-->
+
+
+</body>
+</html>

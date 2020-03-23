@@ -2,25 +2,21 @@
 <html>
 <head>
   <title>게임 할인 모음</title>
+  {% load static %}
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <meta name="description" content="Slide Down Box Menu with jQuery and CSS3" />
   <meta name="keywords" content="jquery, css3, sliding, box, menu, cube, navigation, portfolio, thumbnails"/>
   <link href="https://fonts.googleapis.com/css?family=Yeon+Sung&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"/>
-  <!-- <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon"/> -->
-  <!-- <link rel="stylesheet" href="{{ url_for('static', filename='../static/game_sale_style/nav_style.css') }}" type="text/css" media="screen"/> -->
-  <!-- <link rel="stylesheet" href="{{ url_for('static', filename='../static/game_sale_style/basic_style.css') }}"/> -->
-  <link rel="stylesheet" href="../static/game_sale_style/nav_style.css">
-  <link rel="stylesheet" href="../static/game_sale_style/basic_style.css">
+  <link rel="stylesheet" href="{% static 'style/basic_style.css' %}">
+  <link rel="stylesheet" href="{% static 'style/nav_style.css' %}">
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
-  <script type="text/javascript" src="{{ url_for('static', filename='game_sale_nav/jquery.easing.1.3.js') }}"></script>
-  <!-- 자동검색 -->
-  <!-- <script type="text/javascript" src="../static/index_jquery/lib/jquery.js"></script> -->
-  <script type='text/javascript' src='../static/index_jquery/lib/jquery.bgiframe.min.js'></script>
-  <script type='text/javascript' src='../static/index_jquery/lib/jquery.ajaxQueue.js'></script>
-  <script type='text/javascript' src='../static/index_jquery/jquery.autocomplete.js'></script>
-  <link rel="stylesheet" type="text/css" href="../static/index_jquery/jquery.autocomplete.css" />
-  <!-- 자동검색 -->
+  <script type="text/javascript" src="{% static 'navbar_js/jquery.easing.1.3.js' %}"></script>
+  <script type='text/javascript' src="{% static 'index_jquery/lib/jquery.bgiframe.min.js' %}"></script>
+  <script type='text/javascript' src="{% static 'index_jquery/lib/jquery.ajaxQueue.js' %}"></script>
+  <script type='text/javascript' src="{% static 'index_jquery/jquery.autocomplete.js' %}"></script>
+  <link rel="stylesheet" type="text/css" href="{% static 'index_jquery/jquery.autocomplete.css' %}" />
+
   <script type="text/javascript">
   $(function() {
     $('#sdt_menu > li').bind('mouseenter',function(){
@@ -90,20 +86,19 @@
             var game_discount_price_usd = game_data_onsale[i]['discount_price_usd'];
             if (indexed_game == game_title){
               $('#game_td').empty();
-              // $('#index_result').append("<tr><a href=" + game_link + "><td>" + game_platform + "</td><td>" + game_title + "</td><td>" + game_original_price + "</td><td>" +game_discount_rate + "</td><td>" + game_discount_price + "</td></a></tr>");
               $('#index_result').append("<div class='card card_style' style='width: 18rem;'><img class='card_platform_img' alt='...'/><img class='card-img-top card_game_img' alt='....'/><div class='card-body card_body_style'><h4 class='card-title'></h4><div class='card_price'><s></s><span class='card_discount_rate'></span><span class='card_discount_price'></span></div><a class='btn btn-dark btn-outline-warning btn_puchase'>구매하러가기</a><br/><a href='#' class='btn btn-dark btn-outline-warning btn_wishlist'>찜해두기</a></div></div>");
               if(game_platform == 'steam'){
-                $('div.card').children('img.card_platform_img').attr('src', '../static/images/steam_icon.jpg')
+                $('div.card').children('img.card_platform_img').attr('src', "{% static 'images/steam_icon.jpg' %}")
               }else if (game_platform == 'uplay') {
-                $('div.card').children('img.card_platform_img').attr('src', '../static/images/uplay_icon.jpg')
+                $('div.card').children('img.card_platform_img').attr('src', "{% static 'images/uplay_icon.jpg' %}")
               }else if (game_platform == 'epic') {
-                $('div.card').children('img.card_platform_img').attr('src', '../static/images/epic_icon.jpg')
+                $('div.card').children('img.card_platform_img').attr('src', "{% static 'images/epic_icon.jpg' %}")
               }else if (game_platform == 'humble') {
-                $('div.card').children('img.card_platform_img').attr('src', '../static/images/humble_icon.jpg')
+                $('div.card').children('img.card_platform_img').attr('src', "{% static 'images/humble_icon.jpg' %}")
               }else if (game_platform == 'gog') {
-                $('div.card').children('img.card_platform_img').attr('src', '../static/images/gog_icon.jpg')
+                $('div.card').children('img.card_platform_img').attr('src', "{% static 'images/gog_icon.jpg' %}")
               }else if (game_platform == 'direct') {
-                $('div.card').children('img.card_platform_img').attr('src', '../static/images/direct_icon.jpg')
+                $('div.card').children('img.card_platform_img').attr('src', "{% static 'images/direct_icon.jpg' %}")
               }
               $('div.card').children('img.card-img-top').attr('src', game_img)
               $('div.card').children('div.card-body').children('h4.card-title').text(game_title)
@@ -153,7 +148,7 @@
   </head>
   <body>
     <div class="top_menu">
-    <a href="/serial_seller" class="sign">
+    <a href="/serialseller" class="sign">
       <span class="fast-flicker">ser</span>ial s<span class="flicker">elle</span>r
     </a>
     <div class="index_bar_container">
@@ -169,37 +164,37 @@
       <ul id="sdt_menu" class="sdt_menu">
         <li>
           <a>
-            <img src="../static/images/platform_img.jpg" alt=""/>
+            <img src="{% static 'images/platform_img.jpg' %}" alt=""/>
             <span class="sdt_active"></span>
             <span class="sdt_wrap">
               <span class="sdt_link">공식 플랫폼</span>
               <span class="sdt_descr"></span>
             </span>
             <div class="sdt_box">
-              <a href="/sell_page?platform=steam&sort=discount_rate&order=dsc&page=1">스팀</a>
-              <a href="/sell_page?platform=uplay&sort=discount_rate&order=dsc&page=1">유플레이</a>
-              <a href="/sell_page?platform=epic&sort=discount_rate&order=dsc&page=1">에픽스토어</a>
-              <a href="/sell_page?platform=gog&sort=discount_rate&order=dsc&page=1">GOG.com</a>
-              <a href="/sell_page?platform=humble&sort=discount_rate&order=dsc&page=1">험블번들</a>
+              <a href="/salespage?platform=steam&sort=discount_rate&order=dsc&page=1">스팀</a>
+              <a href="/salespage?platform=uplay&sort=discount_rate&order=dsc&page=1">유플레이</a>
+              <a href="/salespage?platform=epic&sort=discount_rate&order=dsc&page=1">에픽스토어</a>
+              <a href="/salespage?platform=gog&sort=discount_rate&order=dsc&page=1">GOG.com</a>
+              <a href="/salespage?platform=humble&sort=discount_rate&order=dsc&page=1">험블번들</a>
             </div>
           </a>
         </li>
         <li>
           <a>
-            <img src="../static/images/reseller_img.jpg" alt=""/>
+            <img src="{% static 'images/reseller_img.jpg' %}" alt=""/>
             <span class="sdt_active"></span>
             <span class="sdt_wrap">
               <span class="sdt_link">리셀러 사이트</span>
               <span class="sdt_descr"></span>
             </span>
             <div class="sdt_box">
-              <a href="/sell_page?platform=direct&sort=discount_rate&order=dsc&page=1">다이렉트게임즈</a>
+              <a href="/salespage?platform=direct&sort=discount_rate&order=dsc&page=1">다이렉트게임즈</a>
             </div>
           </a>
         </li>
         <li>
-          <a href="/sell_page?platform=all&sort=discount_price&order=asc&page=1">
-            <img src="../static/images/discount_price_img.jpg" alt=""/>
+          <a href="/salespage?platform=all&sort=discount_price&order=asc&page=1">
+            <img src="{% static 'images/discount_price_img.jpg' %}" alt=""/>
             <span class="sdt_active"></span>
             <span class="sdt_wrap">
               <span class="sdt_link">최저가!</span>
@@ -208,8 +203,8 @@
           </a>
         </li>
         <li>
-          <a href="/sell_page?platform=all&sort=discount_rate&order=dsc&page=1">
-            <img src="../static/images/discount_rate_img.jpg" alt=""/>
+          <a href="salespage?platform=all&sort=discount_rate&order=dsc&page=1">
+            <img src="{% static 'images/discount_rate_img.jpg' %}" alt=""/>
             <span class="sdt_active"></span>
             <span class="sdt_wrap">
               <span class="sdt_link">최고할인율!</span>
@@ -219,7 +214,7 @@
         </li>
         <li>
           <a href="/mywish_page">
-            <img src="../static/images/1.jpg" alt=""/>
+            <img src="{% static 'images/1.jpg' %}" alt=""/>
             <span class="sdt_active"></span>
             <span class="sdt_wrap">
               <span class="sdt_link">내 목록</span>

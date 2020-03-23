@@ -13,7 +13,7 @@ def home():
 @app.route('/serial_seller', methods = ['POST', 'GET'])
 def game_main_page():
    return render_template('game_sales.html')
-3
+
 
 @app.route('/sell_page')
 def game_sell_page():
