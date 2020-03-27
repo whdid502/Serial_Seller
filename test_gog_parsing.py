@@ -7,9 +7,13 @@ games_1st_dic = json.loads(games_1st)
 url2 = 'https://www.gog.com/games/ajax/filtered?mediaType=game&page=2&price=discounted&sort=popularity'
 games_2nd = requests.get(url2).text
 games_2nd_dic = json.loads(games_2nd)
+url3 = 'https://www.gog.com/games/ajax/filtered?mediaType=game&page=3&price=discounted&sort=popularity'
+games_3rd = requests.get(url3).text
+games_3rd_dic = json.loads(games_3rd)
 games_1st_value = games_1st_dic.setdefault('products')
 games_2nd_value = games_2nd_dic.setdefault('products')
-games = games_1st_value + games_2nd_value
+games_3rd_value = games_3rd_dic.setdefault('products')
+games = games_1st_value + games_2nd_value + games_3rd_value
 for game in games:
     game_link = 'https://www.gog.com/' + game['url']
     game_title = game['title']
