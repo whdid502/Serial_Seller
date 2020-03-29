@@ -282,3 +282,26 @@ epic_sale()
 humble_sale()
 gog_sale()
 direct_sale()
+
+def steam_sale():
+   # ...
+   # 크롤링 코딩
+   # ...
+   client = MongoClient('localhost', 27017)
+   db = client.dball_games
+   db.info.insert_one(...)
+def uplay_sale():
+   # ...
+   # 크롤링 코딩
+   # ...
+   client = MongoClient('localhost', 27017)
+   db = client.dball_games
+   db.info.insert_one(...)
+def humble_sale():
+   # ...
+   # 크롤링 코딩
+   # ...
+   client = MongoClient('localhost', 27017)
+   db = client.dball_games
+   db.info.insert_one(...)
+
