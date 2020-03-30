@@ -13,9 +13,15 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf.urls import url,include
 from django.contrib import admin
-from django.urls import path
+from rest_framework import routers
+from dcgames.views import GamesViewSet
+
+router = routers.DefaultRouter()
+router.register('all_games_info',GamesViewSet) # prefix = movies , viewset = MovieViewSet
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    url(r'^admin/', admin.site.urls),
+    url(r'^',include(router.urls)),
 ]
