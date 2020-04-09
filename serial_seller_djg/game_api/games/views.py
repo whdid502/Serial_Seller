@@ -1,22 +1,15 @@
 from django.shortcuts import render
+from django_filters import rest_framework as filters
 from rest_framework import viewsets
+from rest_framework.filters import OrderingFilter
 from .serializers import GameSerializer
 from .models import SalesGames
-#
-# class GameViewSet(viewsets.ModelViewSet):
-#     queryset = SalesGames.objects.all()
-#     serializer_class = GameSerializer
-
 from django_filters.rest_framework import DjangoFilterBackend
-
-class UserFilterViewSet(viewsets.GenericViewSet):
+#
+class GameViewSet(viewsets.ModelViewSet):
     queryset = SalesGames.objects.all()
     serializer_class = GameSerializer
-    filter_backends = (DjangoFilterBackend,)
-    filter_fields = ('platform',)
+    filter_backends = (DjangoFilterBackend, OrderingFilter)
+    filter_fields = ['platform']
+    ordering_fields = ['discount_price', 'discount_rate']
 
-    def list(self, request, *args, **kwargs):
-        # data = super().list(request, args, kwargs)
-        queryset = self.filter_queryset(self.get_queryset())
-
-# Create your views here.
