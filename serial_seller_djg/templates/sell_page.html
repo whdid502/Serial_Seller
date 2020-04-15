@@ -29,13 +29,18 @@
   var page = params.page;
   var sort = params.sort;
   var order = params.order;
+  if (sort = asc){
+    var sort = ''
+  }else if(sort = dsc){
+    var sort = '-'
+  }
   $(document).ready(
     $.ajax({
       type: "GET",
-      url: "/all_games_info?platform=" + platform + "&sort=" + sort + "&order=" + order + "&page=" + page,
+      url: "/games/?format=json&platform=" + platform + "&ordering=" + sort + order + "&page=" + page,
       data: {},
       success: function(response){
-        var game_data = response['result'];
+        var game_data = response['results'];
         for(var i = 0; i < game_data.length; i++){
           var game_platform = game_data[i]['platform'];
           var game_title = game_data[i]['title'];
@@ -79,10 +84,10 @@
         }
         $.ajax({
           type:"GET",
-          url: "/all_games_info?platform=" + platform + "&sort=" + sort + "&order=" + order + "&page=0",
+          url: "/games/?format=json&page=1",
           data: {},
           success : function(response){
-            var max_game_data = response['result'].length;
+            var max_game_data = response['count'];
             var max_page = Math.ceil(max_game_data/16)
             $('.page_container').append("<li class='page_list first_page'><button class='btn-dark btn btn-outline-light' onclick='change_page(" + 1 + ")'" + ">첫페이지</button></li>");
             if(max_page > 4){

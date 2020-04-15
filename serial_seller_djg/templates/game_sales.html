@@ -123,11 +123,11 @@
       var title_for_index = [];
       $.ajax({
         type:"GET",
-        url: "/all_games_info?platform=all&sort=&order=&page=0",
+        url: "/games/?format=json&page=1",
         data: {},
         success : function(response){
           var indexed_game = $('.index_bar_size').val();
-          var game_data_onsale = response['result'];
+          var game_data_onsale = response['results'];
           for(i=0; i < game_data_onsale.length; i++){
             var game_title = game_data_onsale[i]['title'];
             title_for_index.push(game_title);
