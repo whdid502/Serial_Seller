@@ -37,7 +37,7 @@
   $(document).ready(
     $.ajax({
       type: "GET",
-      url: "/games/?format=json&platform=" + platform + "&ordering=" + sort + order + "&page=" + page,
+      url: "13.209.3.126:8002/games/?format=json&platform=" + platform + "&ordering=" + sort + order + "&page=" + page,
       data: {},
       success: function(response){
         var game_data = response['results'];
@@ -84,7 +84,7 @@
         }
         $.ajax({
           type:"GET",
-          url: "/games/?format=json&page=1",
+          url: "13.209.3.126:8002/games/?format=json&page=1",
           data: {},
           success : function(response){
             var max_game_data = response['count'];
