@@ -1,4 +1,4 @@
-"""serial_seller_djg URL Configuration
+"""game_api URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/3.0/topics/http/urls/
@@ -13,13 +13,16 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
+from django.conf.urls import url,include
 from django.contrib import admin
-from django.urls import path
-from django.conf.urls import include
+from rest_framework import routers
+from games_api.views import GameViewSet
+
+router = routers.DefaultRouter()
+router.register('games',GameViewSet)
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('serialseller/', include('home.urls')),
-    path('salespage/', include('salespage.urls')),
-    path('gamesapi/', include('games_api.urls'))
+    # url(r'^admin/', admin.site.urls),
+    url(r'^', include(router.urls)),
 ]

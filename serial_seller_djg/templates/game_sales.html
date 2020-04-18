@@ -69,11 +69,11 @@
     function index_game() {
       $.ajax({
         type:"GET",
-        url: "http://13.209.3.126:8002/games?format=json&page=1",
+        url: "/gamesapi/games?format=json&page=1",
         data: {},
         success : function(response){
           var indexed_game = $('.index_bar_size').val();
-          var game_data_onsale = response['result'];
+          var game_data_onsale = response['results'];
           for(i=0; i < game_data_onsale.length; i++){
             var game_platform = game_data_onsale[i]['platform'];
             var game_title = game_data_onsale[i]['title'];
@@ -123,7 +123,7 @@
       var title_for_index = [];
       $.ajax({
         type:"GET",
-        url: "http://13.209.3.126:8002/games/?format=json&page=1",
+        url: "/gamesapi/games/?format=json&page=1",
         data: {},
         success : function(response){
           var indexed_game = $('.index_bar_size').val();
