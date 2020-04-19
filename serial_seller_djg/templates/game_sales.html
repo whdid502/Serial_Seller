@@ -69,7 +69,7 @@
     function index_game() {
       $.ajax({
         type:"GET",
-        url: "/gamesapi/games?format=json&page=1",
+        url: "/gamesapi/index/?format=json",
         data: {},
         success : function(response){
           var indexed_game = $('.index_bar_size').val();
@@ -123,7 +123,7 @@
       var title_for_index = [];
       $.ajax({
         type:"GET",
-        url: "/gamesapi/games/?format=json&page=1",
+        url: "/gamesapi/index/?format=json",
         data: {},
         success : function(response){
           var indexed_game = $('.index_bar_size').val();
@@ -203,7 +203,7 @@
           </a>
         </li>
         <li>
-          <a href="salespage?platform=all&sort=discount_rate&order=dsc&page=1">
+          <a href="/salespage?platform=all&sort=discount_rate&order=dsc&page=1">
             <img src="{% static 'images/discount_rate_img.jpg' %}" alt=""/>
             <span class="sdt_active"></span>
             <span class="sdt_wrap">

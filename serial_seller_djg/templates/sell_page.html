@@ -26,6 +26,11 @@
   }
   var params = get_query_string_object();
   var platform = params.platform;
+  if (platform == 'all'){
+    platform = ''
+  }else{
+    platform = platform
+  }
   var page = params.page;
   var sort = params.sort;
   var order = params.order;
