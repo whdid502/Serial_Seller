@@ -73,7 +73,7 @@
         data: {},
         success : function(response){
           var indexed_game = $('.index_bar_size').val();
-          var game_data_onsale = response['results'];
+          var game_data_onsale = response;
           for(i=0; i < game_data_onsale.length; i++){
             var game_platform = game_data_onsale[i]['platform'];
             var game_title = game_data_onsale[i]['title'];
@@ -127,7 +127,7 @@
         data: {},
         success : function(response){
           var indexed_game = $('.index_bar_size').val();
-          var game_data_onsale = response['results'];
+          var game_data_onsale = response;
           for(i=0; i < game_data_onsale.length; i++){
             var game_title = game_data_onsale[i]['title'];
             title_for_index.push(game_title);

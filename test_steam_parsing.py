@@ -2,14 +2,6 @@ import requests
 from bs4 import BeautifulSoup
 import json
 
-whole_source = ""
-for page_number in range(1, 4):
-    url = 'https://store.steampowered.com/search/?specials=1&filter=topsellers&page=' + str(page_number)
-    response = requests.get(url)
-    whole_source += response.text
-soup = BeautifulSoup(whole_source, 'html.parser')
-games = soup.select('div#search_resultsRows > a')
-print(games)
 games_info = []
 def steam_sale():
     whole_source = ""
@@ -23,9 +15,8 @@ def steam_sale():
         game_link = game['href']
         game_img = game.select_one('div > img').get('src')
         game_title = game.select_one('div > div > span.title').text
-        game_original_price = game.select_one('div > div > div > span > strike').text.replace('₩', '',
-                                                                                              1).strip().replace(
-            ',', '')
+        game_original_price = '10000'
+        # game_original_price = game.select_one('div > div > div > span > strike').text.translate({ord('₩'): '', ord(','): ''}).strip()
         game_discount_rate = game.select_one('div > div > div > span').text.translate({ord('-'): '', ord('%'): ''})
         combined_div = game.select_one('div > div > div.search_price')
         unwanted_div = game.select_one('div > div > div.search_price > span')
@@ -44,10 +35,13 @@ def steam_sale():
         krw = upbit_get_usd_krw()
         game_original_price_usd = round(game_original_price / krw, 2)
         game_discount_price_usd = round(game_discount_price / krw, 2)
-        game = {'platform' : 'steam', 'link' : game_link ,'img' : game_img, 'title' : game_title, 'original_price' : game_discount_price, "discount_rate" : game_discount_rate, 'discount_price' : game_discount_price, 'original_price_usd' : game_original_price_usd, 'discount_price_usd' : game_discount_price_usd}
+        game = {'platform': 'steam', 'link': game_link, 'img': game_img, 'title': game_title,
+                'original_price': game_original_price, "discount_rate": game_discount_rate,
+                'discount_price': game_discount_price, 'original_price_usd': game_original_price_usd,
+                'discount_price_usd': game_discount_price_usd}
         games_info.append(game)
-# steam_sale()
-
+steam_sale()
+print(games_info)
 # def uplay_sale():
 #     headers = {'User-Agent' : 'Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36'}
 #     r = requests.get('https://store.ubi.com/kr/deals?srule=Best%20sellers&sz=12&start=1', headers = headers)

@@ -231,6 +231,9 @@ direct_sale()
 #     print(i['original_price'], i['original_price_usd'], i['discount_rate'], i['discount_price'], i['discount_price_usd'])
 
 try:
+    sql_del = 'DELETE from sales_games'
+    curs.execute(sql_del)
+    conn.commit()
     idnum = 0
     for i in games_info:
         idnum += 1
