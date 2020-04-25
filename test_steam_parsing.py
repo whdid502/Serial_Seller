@@ -15,8 +15,8 @@ def steam_sale():
         game_link = game['href']
         game_img = game.select_one('div > img').get('src')
         game_title = game.select_one('div > div > span.title').text
-        game_original_price = '10000'
-        # game_original_price = game.select_one('div > div > div > span > strike').text.translate({ord('₩'): '', ord(','): ''}).strip()
+        # game_original_price = '10000'
+        game_original_price = game.select_one('div > div > div > span > strike').text.translate({ord('₩'): '', ord(','): ''}).strip()
         game_discount_rate = game.select_one('div > div > div > span').text.translate({ord('-'): '', ord('%'): ''})
         combined_div = game.select_one('div > div > div.search_price')
         unwanted_div = game.select_one('div > div > div.search_price > span')
