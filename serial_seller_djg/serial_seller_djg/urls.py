@@ -21,5 +21,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('serialseller/', include('home.urls')),
     path('salespage/', include('salespage.urls')),
-    path('gamesapi/', include('games_api.urls'))
+    path('gamesapi/', include('games_api.urls')),
+    path('django_login/', include('django_login.urls'))
 ]
