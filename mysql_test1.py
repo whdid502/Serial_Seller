@@ -10,7 +10,8 @@ b1 = a1.replace('₩', '', 1).strip().replace(',', '')
 #     b = 0
 # if b1 == complex:
 #     b1 = 0
+import os
 print(a, type(a), a1, type(a1), b, type(b), b1, type(b1))
-
+# print(os.path.abspath('python3'))
 # c = int(a)
 # print(a, b, a1, b1)

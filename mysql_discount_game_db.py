@@ -1,6 +1,8 @@
 import pymysql
 import requests
 import json
+import os
+import os.path
 from bs4 import BeautifulSoup
 
 conn = pymysql.connect(host='13.209.3.126', user='root', password='Whdid7738@', db='discount_game', charset='utf8')
@@ -245,4 +247,6 @@ try:
     conn.commit()
 finally:
     conn.close()
+
+print(os.path.dirname(os.path.abspath(__file__)))
 
