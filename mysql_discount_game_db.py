@@ -29,6 +29,8 @@ def steam_sale():
         for div in unwanted_div:
             div.extract()
         game_discount_price = combined_div.text.replace('₩', '', 1).strip().replace(',', '')
+        if game_discount_price == 'Free' or game_discount_price == '무료':
+            game_discount_price = 0
         game_original_price = int(game_original_price)
         game_discount_rate = int(game_discount_rate)
         game_discount_price = int(game_discount_price)

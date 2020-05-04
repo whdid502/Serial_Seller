@@ -1,18 +1,16 @@
-import pymysql
+a = '무료       '
+a1 = '₩37,200      '
+# if a != int:
+#     a = 0
+# if a1 != int:
+#     a1 = 0
+b = a.replace('₩', '', 1).strip().replace(',', '')
+b1 = a1.replace('₩', '', 1).strip().replace(',', '')
+# if b == str:
+#     b = 0
+# if b1 == complex:
+#     b1 = 0
+print(a, type(a), a1, type(a1), b, type(b), b1, type(b1))
 
-conn = pymysql.connect(host='13.209.3.126', user='root', password='Whdid7738@', db='test1', charset='utf8')
-curs = conn.cursor(pymysql.cursors.DictCursor)
-
-try:
-    sql2 = "DELETE from korea"
-    curs.execute(sql2)
-    conn.commit()
-    for num in range(30, 40):
-        sql = "INSERT INTO korea (id, name, model_num, model_type) VALUES(" + str(num) + ", 'i5', '7700', 'Kaby Lake')"
-        curs.execute(sql)
-        conn.commit()
-    # sql = "DELETE from korea"
-    # curs.execute(sql)
-    # conn.commit()
-finally:
-    conn.close()
+# c = int(a)
+# print(a, b, a1, b1)
