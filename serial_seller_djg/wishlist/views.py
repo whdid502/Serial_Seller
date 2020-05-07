@@ -1,12 +1,9 @@
-from django.shortcuts import render
-from django.http import HttpResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import View
+from django.shortcuts import render
 
-def homepage(request):
-    return render(request, 'game_sales.html')
-    # return HttpResponse("Hello, world. You're at the polls index.")
 
+# Create your views here.
 class IndexView(View):
     def get(self, request, *args, **kwargs):
         context = {'parm1': 'hello', 'parm2': 'django', 'auth': request.user.is_authenticated}

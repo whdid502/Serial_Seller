@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     # 'games_api',
     'rest_framework',
     'games_api.apps.Games_apiConfig',
-    'django_filters'
+    'django_filters',
 ]
 
 MIDDLEWARE = [
@@ -146,3 +146,5 @@ REST_FRAMEWORK = {
     # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     # 'PAGE_SIZE': 16
 }
+
+LOGIN_REDIRECT_URL = '/profile'
