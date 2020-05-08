@@ -46,9 +46,17 @@ INSTALLED_APPS = [
     'salespage',
     # 'games_api',
     'rest_framework',
+    'rest_framework.authtoken',
+    'rest_auth',
     'games_api.apps.Games_apiConfig',
     'django_filters',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'rest_auth.registration',
 ]
+
+SITE_ID = 1
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -147,4 +155,4 @@ REST_FRAMEWORK = {
     # 'PAGE_SIZE': 16
 }
 
-LOGIN_REDIRECT_URL = '/profile'
+LOGIN_REDIRECT_URL = '/'

@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from django.conf.urls import include
+from django.conf.urls import include, url
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
@@ -23,6 +23,6 @@ urlpatterns = [
     path('serialseller/', include('home.urls')),
     path('salespage/', include('salespage.urls')),
     path('gamesapi/', include('games_api.urls')),
-    path('proflie/'), include('wishlist.urls'),
-    path('login/', auth_views.LoginView.as_view(), name='login'),
+    url(r'^rest-auth/', include('rest_auth.urls')),
+    url(r'^rest-auth/registration/', include('rest_auth.registration.urls')),
 ]
