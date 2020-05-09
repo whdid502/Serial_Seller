@@ -17,12 +17,14 @@ from django.contrib import admin
 from django.urls import path
 from django.conf.urls import include, url
 from django.contrib.auth import views as auth_views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('serialseller/', include('home.urls')),
     path('salespage/', include('salespage.urls')),
     path('gamesapi/', include('games_api.urls')),
-    url(r'^rest-auth/', include('rest_auth.urls')),
-    url(r'^rest-auth/registration/', include('rest_auth.registration.urls')),
+    path('accounts/', include('accounts.urls')),
 ]
+# + static(settings.MEDIA_URL, documents_root = settings.MEDIA_ROOT)
