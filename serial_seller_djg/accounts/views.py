@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.contrib import auth
+from django.http import HttpResponseRedirect
 
 def signup(request):
     if request.method == "POST":
@@ -8,7 +9,7 @@ def signup(request):
             user = User.objects.create_user(
                 username=request.POST['username'],password=request.POST['password1'])
             auth.login(request,user)
-            return redirect('home')
+            return HttpResponseRedirect('home')
         return render(request, 'signup.html')
 
     return render(request, 'signup.html')
@@ -20,7 +21,7 @@ def login(request):
         user = auth.authenticate(request, username=username, password=password)
         if user is not None:
             auth.login(request, user)
-            return redirect('home')
+            return HttpResponseRedirect('home')
         else:
             return render(request, 'login.html', {'error': 'username or password in incorrect'})
     else:
@@ -28,5 +29,5 @@ def login(request):
 
 def logout(request):
     auth.logout(request)
-    return redirect('home')
+    return HttpResponseRedirect('home')
 # Create your views here.
