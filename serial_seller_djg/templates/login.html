@@ -4,7 +4,7 @@
 <div class="container">
     <h1>login</h1>
 
-    <form method="POST" action="{$ url 'login'%}">
+    <form method="POST" action="{% url 'login'%}">
         {% csrf_token %}
         Username:
         <br>

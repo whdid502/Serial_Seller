@@ -9,7 +9,7 @@ def signup(request):
             user = User.objects.create_user(
                 username=request.POST['username'],password=request.POST['password1'])
             auth.login(request,user)
-            return HttpResponseRedirect('home')
+            return HttpResponseRedirect('/serialseller')
         return render(request, 'signup.html')
 
     return render(request, 'signup.html')
@@ -21,7 +21,7 @@ def login(request):
         user = auth.authenticate(request, username=username, password=password)
         if user is not None:
             auth.login(request, user)
-            return HttpResponseRedirect('home')
+            return HttpResponseRedirect('/serialseller')
         else:
             return render(request, 'login.html', {'error': 'username or password in incorrect'})
     else:
@@ -29,5 +29,5 @@ def login(request):
 
 def logout(request):
     auth.logout(request)
-    return HttpResponseRedirect('home')
+    return HttpResponseRedirect('/serialseller')
 # Create your views here.
